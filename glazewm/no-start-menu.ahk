@@ -15,5 +15,5 @@
 #HotIf
 
 HerdrNav(cmd) {
-    Run 'wsl.exe -e /home/kremeshnoi/.local/bin/herdr-nav ' cmd, , "Hide"
+    SetTimer(() => Run('wsl.exe -e /home/kremeshnoi/.local/bin/herdr-nav ' cmd, , "Hide"), -1)
 }

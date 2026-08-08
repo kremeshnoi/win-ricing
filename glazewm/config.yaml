@@ -8,7 +8,7 @@ general:
     enabled: true
     trigger: 'monitor_focus'
   hide_method: 'cloak'
-  show_all_in_taskbar: false
+  show_all_in_taskbar: true
 
 gaps:
   scale_with_dpi: true
@@ -56,16 +56,33 @@ window_behavior:
       shown_on_top: false
 
 workspaces:
-  - name: 'desktop'
-  - name: 'term'
-  - name: 'chrome'
-  - name: 'claude'
-  - name: 'obsidian'
-  - name: 'telegram'
-  - name: 'discord'
-  - name: 'spotify'
-  - name: '1password'
-  - name: 'misc'
+  - name: '1-desktop'
+    display_name: 'desktop'
+    keep_alive: true
+  - name: '2-chrome'
+    display_name: 'chrome'
+    keep_alive: true
+  - name: '3-terminal'
+    display_name: 'terminal'
+    keep_alive: true
+  - name: '4-spotify'
+    display_name: 'spotify'
+    keep_alive: true
+  - name: '5-discord'
+    display_name: 'discord'
+    keep_alive: true
+  - name: '6-telegram'
+    display_name: 'telegram'
+    keep_alive: true
+  - name: '7-claude'
+    display_name: 'claude'
+    keep_alive: true
+  - name: '8-obsidian'
+    display_name: 'obsidian'
+    keep_alive: true
+  - name: '9-misc'
+    display_name: 'misc'
+    keep_alive: true
 
 window_rules:
   - commands: ['ignore']
@@ -74,37 +91,35 @@ window_rules:
       - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
         window_class: { regex: 'Chrome_WidgetWin_1|MozillaDialogClass' }
 
-  - commands: ['move --workspace term', 'focus --workspace term']
+  - commands: ['move --workspace 3-terminal', 'focus --workspace 3-terminal']
     match:
       - window_process: { regex: '(?i)^windowsterminal$' }
-  - commands: ['move --workspace chrome', 'focus --workspace chrome']
+  - commands: ['move --workspace 2-chrome', 'focus --workspace 2-chrome']
     match:
       - window_process: { regex: '(?i)^chrome$' }
-  - commands: ['move --workspace claude', 'focus --workspace claude']
+  - commands: ['move --workspace 7-claude', 'focus --workspace 7-claude']
     match:
       - window_process: { regex: '(?i)^claude$' }
-  - commands: ['move --workspace obsidian', 'focus --workspace obsidian']
+  - commands: ['move --workspace 8-obsidian', 'focus --workspace 8-obsidian']
     match:
       - window_process: { regex: '(?i)^obsidian$' }
-  - commands: ['move --workspace telegram', 'focus --workspace telegram']
+  - commands: ['move --workspace 6-telegram', 'focus --workspace 6-telegram']
     match:
       - window_process: { regex: '(?i)^telegram$' }
-  - commands: ['move --workspace discord', 'focus --workspace discord']
+  - commands: ['move --workspace 5-discord', 'focus --workspace 5-discord']
     match:
       - window_process: { regex: '(?i)^discord$' }
-  - commands: ['move --workspace spotify', 'focus --workspace spotify']
+  - commands: ['move --workspace 4-spotify', 'focus --workspace 4-spotify']
     match:
       - window_process: { regex: '(?i)^spotify$' }
-  - commands: ['move --workspace 1password', 'focus --workspace 1password']
-    match:
-      - window_process: { regex: '(?i)^1password$' }
 
-  - commands: ['move --workspace misc']
+  - commands: ['move --workspace 9-misc']
     match:
-      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|claude|obsidian|telegram|discord|spotify|1password|zebar)$' }
+      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|claude|obsidian|telegram|discord|spotify|zebar)$' }
 
 binding_modes:
   - name: 'resize'
+    keep_alive: true
     keybindings:
       - commands: ['resize --width -2%']
         bindings: ['h', 'left']
@@ -118,52 +133,48 @@ binding_modes:
         bindings: ['escape', 'enter', 'lwin+r']
 
 keybindings:
-  - commands: ['focus --workspace desktop']
+  - commands: ['focus --workspace 1-desktop']
     bindings: ['lwin+0']
-  - commands: ['focus --workspace term']
+  - commands: ['focus --workspace 3-terminal']
     bindings: ['lwin+t']
-  - commands: ['focus --workspace chrome']
+  - commands: ['focus --workspace 2-chrome']
     bindings: ['lwin+g']
-  - commands: ['focus --workspace claude']
+  - commands: ['focus --workspace 7-claude']
     bindings: ['lwin+c']
-  - commands: ['focus --workspace obsidian']
+  - commands: ['focus --workspace 8-obsidian']
     bindings: ['lwin+o']
-  - commands: ['focus --workspace discord']
+  - commands: ['focus --workspace 5-discord']
     bindings: ['lwin+d']
-  - commands: ['focus --workspace telegram']
+  - commands: ['focus --workspace 6-telegram']
     bindings: ['lwin+m']
-  - commands: ['focus --workspace misc']
+  - commands: ['focus --workspace 9-misc']
     bindings: ['lwin+9']
-  - commands: ['focus --workspace spotify']
+  - commands: ['focus --workspace 4-spotify']
     bindings: ['lwin+s']
-  - commands: ['focus --workspace 1password']
-    bindings: ['lwin+1']
   - commands: ['focus --recent-workspace']
     bindings: ['lwin+tab']
 
-  - commands: ['move --workspace desktop', 'focus --workspace desktop']
+  - commands: ['move --workspace 1-desktop', 'focus --workspace 1-desktop']
     bindings: ['lwin+shift+0']
-  - commands: ['move --workspace term', 'focus --workspace term']
+  - commands: ['move --workspace 3-terminal', 'focus --workspace 3-terminal']
     bindings: ['lwin+shift+t']
-  - commands: ['move --workspace chrome', 'focus --workspace chrome']
+  - commands: ['move --workspace 2-chrome', 'focus --workspace 2-chrome']
     bindings: ['lwin+shift+g']
-  - commands: ['move --workspace claude', 'focus --workspace claude']
+  - commands: ['move --workspace 7-claude', 'focus --workspace 7-claude']
     bindings: ['lwin+shift+c']
-  - commands: ['move --workspace obsidian', 'focus --workspace obsidian']
+  - commands: ['move --workspace 8-obsidian', 'focus --workspace 8-obsidian']
     bindings: ['lwin+shift+o']
-  - commands: ['move --workspace discord', 'focus --workspace discord']
+  - commands: ['move --workspace 5-discord', 'focus --workspace 5-discord']
     bindings: ['lwin+shift+d']
-  - commands: ['move --workspace telegram', 'focus --workspace telegram']
+  - commands: ['move --workspace 6-telegram', 'focus --workspace 6-telegram']
     bindings: ['lwin+shift+m']
-  - commands: ['move --workspace misc', 'focus --workspace misc']
+  - commands: ['move --workspace 9-misc', 'focus --workspace 9-misc']
     bindings: ['lwin+shift+9']
-  - commands: ['move --workspace spotify', 'focus --workspace spotify']
+  - commands: ['move --workspace 4-spotify', 'focus --workspace 4-spotify']
     bindings: ['lwin+shift+s']
-  - commands: ['move --workspace 1password', 'focus --workspace 1password']
-    bindings: ['lwin+shift+1']
 
   - commands: ['wm-cycle-focus']
-    bindings: ['lwin+a']
+    bindings: ['lwin+shift+l']
   - commands: ['focus --direction left']
     bindings: ['lwin+left']
   - commands: ['focus --direction right']
@@ -185,7 +196,7 @@ keybindings:
   - commands: ['close']
     bindings: ['lwin+q']
   - commands: ['toggle-fullscreen']
-    bindings: ['lwin+f']
+    bindings: ['lwin+a']
   - commands: ['toggle-floating --centered']
     bindings: ['lwin+shift+f']
   - commands: ['toggle-tiling-direction']

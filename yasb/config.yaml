@@ -1,0 +1,264 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/amnweb/yasb/main/schema.json
+# For more information, visit https://github.com/amnweb/yasb/wiki
+watch_stylesheet: true
+watch_config: true
+system_colors: true
+debug: false
+update_check: true
+bars:
+  primary-bar:
+    enabled: true
+    screens:
+    - '*'
+    class_name: yasb-bar
+    alignment:
+      position: top
+      align: center
+    animation:
+      enabled: true
+      duration: 300
+    blur_effect:
+      enabled: false
+      round_corners: true
+    window_flags:
+      always_on_top: false
+      windows_app_bar: true
+    dimensions:
+      width: 100%
+      height: 36
+    padding:
+      top: 8
+      left: 8
+      bottom: 0
+      right: 8
+    widgets:
+      left:
+      - cpu
+      - gpu
+      - memory
+      - disk_c
+      - disk_d
+      - disk_g
+      center:
+      - cava
+      - media
+      right:
+      - glazewm_workspaces
+      - systray
+      - open_meteo
+      - language
+      - clock
+widgets:
+  clock:
+    type: yasb.clock.ClockWidget
+    options:
+      label: '{%d %b %H:%M}<span>{alarm}</span>'
+      label_alt: '{%a, %d %b %H:%M}'
+      timezones: []
+      calendar:
+        blur: false
+        round_corners: true
+        alignment: center
+        direction: down
+        extended: false
+        show_years: true
+        show_holidays: false
+        show_week_numbers: true
+      callbacks:
+        on_left: toggle_calendar
+  glazewm_workspaces:
+    type: "glazewm.workspaces.GlazewmWorkspacesWidget"
+    options:
+      offline_label: "GlazeWM Offline"
+      hide_if_offline: false
+      monitor_exclusive: true
+      enable_scroll_switching: true
+      app_icons:
+        enabled_populated: false
+        enabled_active: false
+        size: 12
+        max_icons: 0
+        hide_label: false
+        hide_duplicates: false
+        hide_floating: false
+  cava:
+    type: "yasb.cava.CavaWidget"
+    options:
+      bar_height: 12
+      waveform: 0
+      waves: 0
+      monstercat: 0
+      sensitivity: 100
+      edge_fade: 1
+      min_bar_height: 0
+      gradient: 1
+      foreground: "#89b4fa"
+      gradient_color_1: '#74c7ec'
+      gradient_color_2: '#89b4fa'
+      gradient_color_3: '#cba6f7'
+      bars_number: 18
+      bar_spacing: 2
+      bar_width: 4
+      bar_type: "waves"
+      framerate: 60
+      sleep_timer: 2
+      hide_empty: true
+  media:
+    type: "yasb.media.MediaWidget"
+    options:
+      label: "{title}{s}{artist}"
+      label_alt: "{title}{s}{artist}"
+      separator: " - "
+      hide_empty: true
+      callbacks:
+        on_left: "toggle_media_menu"
+        on_middle: "do_nothing"
+        on_right: "do_nothing"
+      max_field_size:
+        label: 26
+        label_alt: 26
+      show_thumbnail: false
+      controls_only: false
+      controls_left: true
+      controls_hide: true
+      thumbnail_alpha: 80
+      thumbnail_padding: 8
+      thumbnail_corner_radius: 16
+      icons:
+        prev_track: "\ue892"
+        next_track: "\ue893"
+        play: "\ue768"
+        pause: "\ue769"
+      media_menu:
+        blur: false
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "system"
+        alignment: "right"
+        direction: "down"
+        offset_top: 6
+        offset_left: 0
+        thumbnail_corner_radius: 8
+        thumbnail_size: 120
+        max_title_size: 60
+        max_artist_size: 50
+        show_source: true
+      media_menu_icons:
+        play: "\uf04b"
+        pause: "\uf04c"
+        prev_track: "\udb81\udcae"
+        next_track: "\udb81\udcad"
+      scrolling_label:
+        enabled: false
+        update_interval_ms: 33
+        style: "left"  # can be "left", "right", "bounce", "bounce-ease"
+        separator: " | "
+        label_padding: 0
+        always_scroll: false
+      # Easing curve params: https://www.desmos.com/calculator/j7eamemxzi
+        ease_slope: 20
+        ease_pos: 0.8
+        ease_min: 0.5
+      progress_bar:
+        enabled: false       # Whether to enable the progress bar on the widget.
+        alignment: "bottom"  # The alignment of the progress bar inside the widget container. Can be "top", "bottom", or "center".
+  cpu:
+    type: "yasb.cpu.CpuWidget"
+    options:
+      label: "CPU {info[percent][total]}%"
+      label_alt: "CPU {info[histograms][cpu_percent]}"
+      update_interval: 2000
+      hide_decimal: true
+  gpu:
+    type: "yasb.gpu.GpuWidget"
+    options:
+      label: "GPU {info[utilization]}%"
+      label_alt: "GPU {info[mem_used]}/{info[mem_total]}"
+      update_interval: 2000
+      hide_decimal: true
+  memory:
+    type: "yasb.memory.MemoryWidget"
+    options:
+      label: "RAM {virtual_mem_percent}%"
+      label_alt: "RAM {virtual_mem_free}/{virtual_mem_total}"
+      update_interval: 5000
+      hide_decimal: true
+  disk_c:
+    type: "yasb.disk.DiskWidget"
+    options:
+      label: "{volume_label} {space[used][percent]}"
+      label_alt: "{volume_label} {space[used][gb]} / {space[total][gb]}"
+      volume_label: "C"
+      update_interval: 60
+      decimal_display: 0
+  disk_d:
+    type: "yasb.disk.DiskWidget"
+    options:
+      label: "{volume_label} {space[used][percent]}"
+      label_alt: "{volume_label} {space[used][gb]} / {space[total][gb]}"
+      volume_label: "D"
+      update_interval: 60
+      decimal_display: 0
+  disk_g:
+    type: "yasb.disk.DiskWidget"
+    options:
+      label: "{volume_label} {space[used][percent]}"
+      label_alt: "{volume_label} {space[used][gb]} / {space[total][gb]}"
+      volume_label: "G"
+      update_interval: 60
+      decimal_display: 0
+  open_meteo:
+    type: "yasb.open_meteo.OpenMeteoWidget"
+    options:
+      label: "{temp}"
+      label_alt: "{icon} {temp}"
+      update_interval: 3600
+      units: "metric"
+  language:
+    type: "yasb.language.LanguageWidget"
+    options:
+      label: "{lang[full_name]}"
+      label_alt: "{lang[language_code]}"
+      update_interval: 1
+      callbacks:
+        on_left: "toggle_menu"
+        on_middle: "do_nothing"
+        on_right: "toggle_label"
+      language_menu:
+        blur: false
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: "system"
+        alignment: "right"
+        direction: "down"
+        offset_top: 6
+        offset_left: 0
+        show_layout_icon: true
+        layout_icon: "\udb80\udf0c"
+  systray:
+    type: "yasb.systray.SystrayWidget"
+    options:
+      class_name: "systray"
+      label_collapsed: "\u25bc"
+      label_expanded: "\u25b6"
+      label_position: "left"
+      icon_size: 16
+      pin_click_modifier: "alt"
+      show_unpinned: true
+      show_unpinned_button: true
+      show_battery: false
+      show_volume: false
+      show_network: false
+      show_in_popup: true
+      use_hook: false
+      icons_per_row: 6
+      hide_icons: []
+      popup:
+        blur: false
+        round_corners: true
+        round_corners_type: "normal"
+        border_color: None
+        alignment: "center"
+        direction: "down"
+        offset_top: 6
+        offset_left: 0
