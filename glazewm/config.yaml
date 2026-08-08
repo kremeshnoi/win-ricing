@@ -1,0 +1,208 @@
+general:
+  startup_commands: []
+  shutdown_commands: []
+  config_reload_commands: []
+  focus_follows_cursor: false
+  toggle_workspace_on_refocus: false
+  cursor_jump:
+    enabled: true
+    trigger: 'monitor_focus'
+  hide_method: 'cloak'
+  show_all_in_taskbar: false
+
+gaps:
+  scale_with_dpi: true
+  inner_gap: '8px'
+  outer_gap:
+    top: '8px'
+    right: '8px'
+    bottom: '8px'
+    left: '8px'
+
+window_effects:
+  focused_window:
+    border:
+      enabled: false
+      color: '#8dbcff'
+    hide_title_bar:
+      enabled: false
+    corner_style:
+      enabled: false
+      style: 'square'
+    transparency:
+      enabled: false
+      opacity: '95%'
+  other_windows:
+    border:
+      enabled: false
+      color: '#a1a1a1'
+    hide_title_bar:
+      enabled: false
+    corner_style:
+      enabled: false
+      style: 'square'
+    transparency:
+      enabled: false
+      opacity: '100%'
+
+window_behavior:
+  initial_state: 'tiling'
+  state_defaults:
+    floating:
+      centered: true
+      shown_on_top: false
+    fullscreen:
+      maximized: false
+      shown_on_top: false
+
+workspaces:
+  - name: 'desktop'
+  - name: 'term'
+  - name: 'chrome'
+  - name: 'claude'
+  - name: 'obsidian'
+  - name: 'telegram'
+  - name: 'discord'
+  - name: 'spotify'
+  - name: '1password'
+  - name: 'misc'
+
+window_rules:
+  - commands: ['ignore']
+    match:
+      - window_process: { regex: '(?i)^(zebar)$' }
+      - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
+        window_class: { regex: 'Chrome_WidgetWin_1|MozillaDialogClass' }
+
+  - commands: ['move --workspace term', 'focus --workspace term']
+    match:
+      - window_process: { regex: '(?i)^windowsterminal$' }
+  - commands: ['move --workspace chrome', 'focus --workspace chrome']
+    match:
+      - window_process: { regex: '(?i)^chrome$' }
+  - commands: ['move --workspace claude', 'focus --workspace claude']
+    match:
+      - window_process: { regex: '(?i)^claude$' }
+  - commands: ['move --workspace obsidian', 'focus --workspace obsidian']
+    match:
+      - window_process: { regex: '(?i)^obsidian$' }
+  - commands: ['move --workspace telegram', 'focus --workspace telegram']
+    match:
+      - window_process: { regex: '(?i)^telegram$' }
+  - commands: ['move --workspace discord', 'focus --workspace discord']
+    match:
+      - window_process: { regex: '(?i)^discord$' }
+  - commands: ['move --workspace spotify', 'focus --workspace spotify']
+    match:
+      - window_process: { regex: '(?i)^spotify$' }
+  - commands: ['move --workspace 1password', 'focus --workspace 1password']
+    match:
+      - window_process: { regex: '(?i)^1password$' }
+
+  - commands: ['move --workspace misc']
+    match:
+      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|claude|obsidian|telegram|discord|spotify|1password|zebar)$' }
+
+binding_modes:
+  - name: 'resize'
+    keybindings:
+      - commands: ['resize --width -2%']
+        bindings: ['h', 'left']
+      - commands: ['resize --width +2%']
+        bindings: ['l', 'right']
+      - commands: ['resize --height +2%']
+        bindings: ['k', 'up']
+      - commands: ['resize --height -2%']
+        bindings: ['j', 'down']
+      - commands: ['wm-disable-binding-mode --name resize']
+        bindings: ['escape', 'enter', 'lwin+r']
+
+keybindings:
+  - commands: ['focus --workspace desktop']
+    bindings: ['lwin+0']
+  - commands: ['focus --workspace term']
+    bindings: ['lwin+t']
+  - commands: ['focus --workspace chrome']
+    bindings: ['lwin+g']
+  - commands: ['focus --workspace claude']
+    bindings: ['lwin+c']
+  - commands: ['focus --workspace obsidian']
+    bindings: ['lwin+o']
+  - commands: ['focus --workspace discord']
+    bindings: ['lwin+d']
+  - commands: ['focus --workspace telegram']
+    bindings: ['lwin+m']
+  - commands: ['focus --workspace misc']
+    bindings: ['lwin+9']
+  - commands: ['focus --workspace spotify']
+    bindings: ['lwin+s']
+  - commands: ['focus --workspace 1password']
+    bindings: ['lwin+1']
+  - commands: ['focus --recent-workspace']
+    bindings: ['lwin+tab']
+
+  - commands: ['move --workspace desktop', 'focus --workspace desktop']
+    bindings: ['lwin+shift+0']
+  - commands: ['move --workspace term', 'focus --workspace term']
+    bindings: ['lwin+shift+t']
+  - commands: ['move --workspace chrome', 'focus --workspace chrome']
+    bindings: ['lwin+shift+g']
+  - commands: ['move --workspace claude', 'focus --workspace claude']
+    bindings: ['lwin+shift+c']
+  - commands: ['move --workspace obsidian', 'focus --workspace obsidian']
+    bindings: ['lwin+shift+o']
+  - commands: ['move --workspace discord', 'focus --workspace discord']
+    bindings: ['lwin+shift+d']
+  - commands: ['move --workspace telegram', 'focus --workspace telegram']
+    bindings: ['lwin+shift+m']
+  - commands: ['move --workspace misc', 'focus --workspace misc']
+    bindings: ['lwin+shift+9']
+  - commands: ['move --workspace spotify', 'focus --workspace spotify']
+    bindings: ['lwin+shift+s']
+  - commands: ['move --workspace 1password', 'focus --workspace 1password']
+    bindings: ['lwin+shift+1']
+
+  - commands: ['wm-cycle-focus']
+    bindings: ['lwin+a']
+  - commands: ['focus --direction left']
+    bindings: ['lwin+left']
+  - commands: ['focus --direction right']
+    bindings: ['lwin+right']
+  - commands: ['focus --direction up']
+    bindings: ['lwin+up']
+  - commands: ['focus --direction down']
+    bindings: ['lwin+down']
+
+  - commands: ['move --direction left']
+    bindings: ['lwin+shift+left']
+  - commands: ['move --direction right']
+    bindings: ['lwin+shift+right']
+  - commands: ['move --direction up']
+    bindings: ['lwin+shift+up']
+  - commands: ['move --direction down']
+    bindings: ['lwin+shift+down']
+
+  - commands: ['close']
+    bindings: ['lwin+q']
+  - commands: ['toggle-fullscreen']
+    bindings: ['lwin+f']
+  - commands: ['toggle-floating --centered']
+    bindings: ['lwin+shift+f']
+  - commands: ['toggle-tiling-direction']
+    bindings: ['lwin+v']
+  - commands: ['toggle-tiling']
+    bindings: ['lwin+shift+v']
+  - commands: ['wm-enable-binding-mode --name resize']
+    bindings: ['lwin+r']
+
+  - commands: ['shell-exec wt']
+    bindings: ['lwin+enter']
+
+  - commands: ['wm-reload-config']
+    bindings: ['lwin+shift+r']
+  - commands: ['wm-redraw']
+    bindings: ['lwin+shift+w']
+  - commands: ['wm-toggle-pause']
+    bindings: ['lwin+shift+p']
+  - commands: ['wm-exit']
+    bindings: ['lwin+shift+e']

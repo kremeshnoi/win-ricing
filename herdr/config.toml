@@ -1,0 +1,28 @@
+onboarding = false
+
+[keys]
+prefix = "ctrl+z"
+previous_tab = ""
+next_tab = ""
+previous_agent = ""
+next_agent = ""
+previous_workspace = ""
+next_workspace = ""
+focus_pane_left = "prefix+left"
+focus_pane_down = "prefix+down"
+focus_pane_up = "prefix+up"
+focus_pane_right = "prefix+right"
+
+[ui.sound]
+enabled = false
+
+[theme]
+name = "vesper"
+auto_switch = false
+
+[ui]
+show_agent_labels_on_pane_borders = true
+
+agent_panel_sort = "spaces"
+[experimental]
+switch_ascii_input_source_in_prefix = true

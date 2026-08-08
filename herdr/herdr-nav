@@ -1,0 +1,62 @@
+#!/usr/bin/env python3
+import json
+import subprocess
+import sys
+
+HERDR = "/home/linuxbrew/.linuxbrew/bin/herdr"
+
+
+def call(*args):
+    out = subprocess.run([HERDR, *args], capture_output=True, text=True).stdout
+    return json.loads(out)["result"]
+
+
+def step_for(direction):
+    return 1 if direction == "next" else -1
+
+
+def cycle(items, direction):
+    if not items:
+        return None
+    focused = next((i for i, x in enumerate(items) if x.get("focused")), None)
+    if focused is None:
+        return items[0]
+    return items[(focused + step_for(direction)) % len(items)]
+
+
+def nav_tab(direction):
+    tabs = call("tab", "list")["tabs"]
+    current = next((t for t in tabs if t.get("focused")), None)
+    if current is None:
+        return
+    scoped = [t for t in tabs if t["workspace_id"] == current["workspace_id"]]
+    target = cycle(scoped, direction)
+    if target:
+        call("tab", "focus", target["tab_id"])
+
+
+def nav_agent(direction):
+    agents = call("agent", "list")["agents"]
+    current = next((a for a in agents if a.get("focused")), None)
+    if current is None:
+        return
+    scoped = [a for a in agents if a["workspace_id"] == current["workspace_id"]]
+    target = cycle(scoped, direction)
+    if target:
+        call("agent", "focus", target["pane_id"])
+
+
+def nav_workspace(direction):
+    workspaces = call("workspace", "list")["workspaces"]
+    target = cycle(workspaces, direction)
+    if target:
+        call("workspace", "focus", target["workspace_id"])
+
+
+ACTIONS = {"tab": nav_tab, "agent": nav_agent, "workspace": nav_workspace}
+
+if len(sys.argv) != 3 or sys.argv[1] not in ACTIONS or sys.argv[2] not in ("next", "prev"):
+    print("usage: herdr-nav <tab|agent|workspace> <next|prev>", file=sys.stderr)
+    sys.exit(2)
+
+ACTIONS[sys.argv[1]](sys.argv[2])
