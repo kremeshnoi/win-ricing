@@ -1,4 +1,4 @@
-# win-ricing
+# Windows ricing
 
 Windows 11 rice: tiling WM, taskbar on top with no Start button, a launcher instead of the Start menu, key remaps, agent navigation inside WSL, and a Spotify theme.
 
