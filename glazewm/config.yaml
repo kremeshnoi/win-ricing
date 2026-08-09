@@ -23,24 +23,24 @@ window_effects:
   focused_window:
     border:
       enabled: false
-      color: '#8dbcff'
+      color: '#333735'
     hide_title_bar:
       enabled: false
     corner_style:
-      enabled: false
-      style: 'square'
+      enabled: true
+      style: 'rounded'
     transparency:
       enabled: false
       opacity: '95%'
   other_windows:
     border:
       enabled: false
-      color: '#a1a1a1'
+      color: '#1f2220'
     hide_title_bar:
       enabled: false
     corner_style:
-      enabled: false
-      style: 'square'
+      enabled: true
+      style: 'rounded'
     transparency:
       enabled: false
       opacity: '100%'
@@ -176,13 +176,13 @@ keybindings:
   - commands: ['wm-cycle-focus']
     bindings: ['lwin+shift+l']
   - commands: ['focus --direction left']
-    bindings: ['lwin+left']
+    bindings: ['lwin+alt+h']
   - commands: ['focus --direction right']
-    bindings: ['lwin+right']
+    bindings: ['lwin+alt+l']
   - commands: ['focus --direction up']
-    bindings: ['lwin+up']
+    bindings: ['lwin+alt+k']
   - commands: ['focus --direction down']
-    bindings: ['lwin+down']
+    bindings: ['lwin+alt+j']
 
   - commands: ['move --direction left']
     bindings: ['lwin+shift+left']

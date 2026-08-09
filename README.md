@@ -9,8 +9,9 @@ Verified on Windows 11 25H2, build 26200.
 | Component | Version | Role |
 |---|---|---|
 | [GlazeWM](https://github.com/glzr-io/glazewm) | 3.10.1 | tiling window manager, one workspace per app |
+| [YASB](https://github.com/amnweb/yasb) | 2.0.6 | status bar at the top, the only bar on screen |
 | [AutoHotkey](https://www.autohotkey.com) + `no-start-menu.ahk` | 2.0.26 | suppresses the Start menu on a lone Win press, keeps Win as a modifier, drives herdr |
-| [Windhawk](https://windhawk.net) + 4 mods | 1.7.3 | taskbar on top, no Start button, compact height, transparent theme |
+| [Windhawk](https://windhawk.net) + 5 mods, 1 active | 1.7.3 | keeps the system taskbar permanently hidden; the four cosmetic mods are off because there is nothing left to style |
 | [PowerToys](https://github.com/microsoft/PowerToys) Keyboard Manager | 0.100.2 | shortcut remaps the system itself won't let you rebind |
 | Windows Terminal | — | WSL host, the only window herdr bindings are scoped to |
 | [herdr](https://herdr.dev) | 0.7.5 | terminal workspace manager for AI agents, runs inside WSL |
@@ -58,7 +59,6 @@ Letters match the AeroSpace config on macOS wherever possible — it lives in th
 | Binding | Workspace | Window process |
 |---|---|---|
 | `lwin+0` | desktop | — |
-| `lwin+1` | 1password | `1Password` |
 | `lwin+9` | misc | everything else |
 | `lwin+t` | term | `WindowsTerminal` |
 | `lwin+g` | chrome | `chrome` |
@@ -77,11 +77,11 @@ App routing lives in `window_rules` and matches on process name. Anything that m
 
 | Binding | Action |
 |---|---|
-| `lwin+a` | cycle through windows in the workspace |
-| `lwin+←↑↓→` | focus by direction |
-| `lwin+shift+←↑↓→` | move window |
+| `lwin+alt+h/j/k/l` | focus by direction — focus only, nothing is relocated |
+| `lwin+shift+←↑↓→` | move window — this is what swaps neighbours |
+| `lwin+shift+l` | cycle focus, most-recent order, across workspaces rather than within one |
 | `lwin+q` | close window |
-| `lwin+f` | fullscreen |
+| `lwin+a` | fullscreen |
 | `lwin+shift+f` | floating |
 | `lwin+v` | split direction |
 | `lwin+shift+v` | tiling |
@@ -92,7 +92,25 @@ App routing lives in `window_rules` and matches on process name. Anything that m
 | `lwin+shift+p` | pause the WM |
 | `lwin+shift+e` | exit the WM |
 
-Left to the system: `Win+Space` (keyboard layout), `Win+E`, `Win+P`, `Win+Shift+S`. Every other `Win+<key>` from the tables above is taken over. `Win+L` is a special case — winlogon handles it below every user-mode hook, so neither GlazeWM nor AutoHotkey can see it — and it stays unusable unless the lock shortcut is disabled outright, which section 6 does to free `lwin+l` for herdr.
+Left to the system: `Win+Space` (keyboard layout), `Win+E`, `Win+P`. Every other `Win+<key>` from the tables above is taken over.
+
+`Win+Shift+S` is **not** left to the system, despite being the region-screenshot shortcut. It falls out of the "`lwin+shift+<same key>` moves the window there" rule — spotify sits on `lwin+s`, so the move took `lwin+shift+s`, and GlazeWM swallows it before the shell sees it. A PowerToys remap onto the same combination was tried and removed for that reason, see section 4. `PrtScn` is bound by nothing here and still opens the region snip. Unresolved: freeing it means moving the spotify move binding, e.g. to `lwin+shift+4`. `Win+L` is a special case — winlogon handles it below every user-mode hook, so neither GlazeWM nor AutoHotkey can see it — and it stays unusable unless the lock shortcut is disabled outright, which section 6 does to free `lwin+l` for herdr.
+
+### Window effects
+
+| Setting | Value |
+|---|---|
+| `border.enabled` | `false` for both focused and unfocused |
+| `corner_style` | `rounded`, both |
+| `hide_title_bar` | `false`, both |
+| `transparency` | `false`, both |
+| `gaps` | 8 px inner, 8 px on every outer edge, DPI-scaled |
+
+`border.enabled: false` does not mean "leave the border alone" — it means there is no border at all. In `platform_impl/windows/native_window.rs` the effect maps to `DwmSetWindowAttribute(DWMWA_BORDER_COLOR)` with `DWMWA_COLOR_NONE` when no colour is configured, and to the colour itself otherwise. Windows draws its default 1 px border only while GlazeWM is not running.
+
+Two things follow. A colour cannot be made invisible: `models/color.rs` demands a leading `#` and exactly 7 or 9 characters, so `transparent` and `none` are rejected, and `to_bgr()` builds the value from `b`, `g`, `r` alone — the alpha in a 9-character `#rrggbbaa` is parsed and then dropped, so `#00000000` paints black rather than nothing. And `wm-reload-config` does not always re-apply the attribute to windows that are already open; follow it with `wm-redraw`.
+
+Corners stay `rounded` to match the bar, at the cost of the screen corners showing through in fullscreen — `maximized: true` would square them, since Windows never rounds a genuinely maximized window, but it was tried and rejected. `shown_on_top` does nothing in 3.10.1: the state reports `shownOnTop: false` whether it is set through the CLI flag, the bare flag, or `state_defaults`.
 
 ## 2. Start menu on a lone Win press
 
@@ -103,23 +121,27 @@ winget install --id AutoHotkey.AutoHotkey -e
 Copy-Item glazewm\no-start-menu.ahk "$env:USERPROFILE\.glzr\glazewm\no-start-menu.ahk" -Force
 ```
 
-Autostart via a shortcut in Startup:
+Autostart from an elevated PowerShell:
 
 ```powershell
-$w = New-Object -ComObject WScript.Shell
-$lnk = $w.CreateShortcut("$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\no-start-menu.lnk")
-$lnk.TargetPath = 'C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe'
-$lnk.Arguments = "$env:USERPROFILE\.glzr\glazewm\no-start-menu.ahk"
-$lnk.Save()
+scripts\install-autostart.ps1
 ```
 
-Not through `general.startup_commands` in GlazeWM: `shell-exec` in 3.10.1 breaks on paths with spaces, quoted or not.
+It registers `\win-ricing\autohotkey` in Task Scheduler — at logon, run level Highest, no execution time limit, restart three times a minute apart — and drops the older shortcut in Startup if one is left over.
 
-The same script also carries the herdr hotkeys from section 6, so this one shortcut is all the autostart there is.
+Not a Startup shortcut, and not `general.startup_commands` in GlazeWM: `shell-exec` in 3.10.1 breaks on paths with spaces, quoted or not, and a shortcut in Startup starts AutoHotkey unelevated. Terminal runs with `"elevate": true`, so an unelevated keyboard hook is cut off by UIPI and every binding from section 6 silently dies while that window has focus. Run level Highest is what makes them survive.
+
+GlazeWM stays on the `HKCU\...\Run` key its installer creates, unelevated on purpose. Its manifest carries `uiAccess="true"`, which already lets it drive elevated windows without an elevated token — and a `uiAccess` binary launched at run level Highest fails outright with `0x800702E4` (`ERROR_ELEVATION_REQUIRED`). AutoHotkey ships a `AutoHotkey64_UIA.exe` built the same way; elevation is used here instead because it needs no trusted signature.
+
+The same script also carries the herdr hotkeys from section 6, so this one task is all the autostart there is.
 
 The script sets `#NoTrayIcon` — no tray icon, so Exit or Suspend Hotkeys can't be hit by accident. To stop it: `taskkill /im AutoHotkey64.exe`.
 
-If Start only pops up while an elevated window has focus, the non-elevated hook can't see those windows. Move the autostart from Startup to Task Scheduler with "run with highest privileges" checked.
+To check the whole chain — elevation of each process, the task, the `Run` key, the lock policy, `herdr-nav` over `wsl.exe` and the herdr socket:
+
+```powershell
+scripts\doctor.ps1
+```
 
 ## 3. Windhawk
 
@@ -129,14 +151,21 @@ winget install --id RamenSoftware.Windhawk -e
 
 Mods are installed by name from the catalog inside Windhawk. Settings are edited in each mod's UI; the values below are the current ones, anything not listed is left at default.
 
-| Mod | Version | What it does |
-|---|---|---|
-| Hide Start Button | 1.0 | removes the Start button from the taskbar; Start itself stays reachable from the keyboard |
-| Taskbar on top for Windows 11 | 1.1.7 | moves the taskbar to the top of the screen |
-| Taskbar height and icon size | 1.3.7 | height 44, icons 20, button width 42 |
-| Windows 11 Taskbar Styler | 1.8 | `SimplyTransparent` theme |
+| Mod | Version | State | What it does |
+|---|---|---|---|
+| Taskbar auto-hide fine tuning | 2.3 | active | `mode: never` — the taskbar never reveals itself, not on hover, not on notifications, not on the Win key |
+| Hide Start Button | 1.0 | off | removes the Start button from the taskbar |
+| Taskbar height and icon size | 1.3.7 | off | height 44, icons 20, button width 42 |
+| Taskbar on top for Windows 11 | 1.1.7 | off | moves the taskbar to the top of the screen |
+| Windows 11 Taskbar Styler | 1.8 | off | `SimplyTransparent` theme |
 
-Order only matters on first install: Styler paints over geometry that's already been changed, so after changing taskbar height or position, reload it (toggle the mod off/on).
+Only the first one is enabled. The other four style a taskbar that is never drawn, so they are kept installed but off — their settings are recorded below in case the approach is ever reverted to a visible taskbar. Order only matters if they come back on: Styler paints over geometry that's already been changed, so after changing taskbar height or position, reload it (toggle the mod off/on).
+
+### Taskbar auto-hide fine tuning
+
+YASB does not touch the system taskbar — it only registers itself as an appbar, and its `hide_taskbar_widget` option refers to its own widget, not to `Shell_TrayWnd`. Hiding the real taskbar is this mod's job.
+
+It fine-tunes auto-hide rather than replacing it, so Windows' own auto-hide has to stay on — the checkbox in Settings, or bit 0 of `HKCU\...\Explorer\StuckRects3\Settings[8]`. With auto-hide on the taskbar reserves no work area, which is what GlazeWM measures against; `mode: never` then removes the reveal-on-hover that auto-hide leaves behind.
 
 ### Hide Start Button
 
@@ -183,9 +212,10 @@ Keyboard Manager reloads the file on change; if it doesn't pick it up, toggle th
 | From | To | Why |
 |---|---|---|
 | `Ctrl+Tab` | `Alt+Tab` | window switcher on a combo that doesn't stretch the pinky; `Win+Tab` is taken by GlazeWM for the previous workspace |
-| `Win+Shift+Enter` | `Win+Shift+S` | region screenshot, alongside the other `Win+Shift+*` bindings from GlazeWM |
 
-Both remaps are global with `exactMatch` off — they fire even with extra modifiers held.
+The remap is global with `exactMatch` off — it fires even with extra modifiers held.
+
+There used to be a second one, `Win+Shift+Enter` → `Win+Shift+S` for the region screenshot. It was removed because it never worked: it synthesises `Win+Shift+S`, and GlazeWM claims that combination for the spotify move binding before the shell sees it, as described at the end of section 1. `PrtScn` does the same job and is bound by nothing here.
 
 ## 5. Windows Terminal
 
@@ -194,6 +224,8 @@ Copy-Item terminal\settings.json "$env:LOCALAPPDATA\Packages\Microsoft.WindowsTe
 ```
 
 GlazeWM routes it to the `term` workspace by process name `WindowsTerminal`, and the herdr bindings in section 6 are active only while this window has focus.
+
+`profiles.defaults` sets `"elevate": true`, so every window runs as administrator. That decides the autostart in section 2: an unelevated AutoHotkey cannot deliver a single hotkey into this window.
 
 ## 6. herdr navigation
 
@@ -230,9 +262,9 @@ Without it `lwin+l` locks the screen and never reaches AutoHotkey. The policy ta
 | `lwin+k` / `lwin+j` | previous / next agent |
 | `lwin+shift+k` / `lwin+shift+j` | previous / next workspace |
 
-The hotkeys sit in `no-start-menu.ahk` next to the Start-menu suppression, so the Startup shortcut from section 2 already launches them — nothing separate to autostart. A round trip through `wsl.exe` costs about 95 ms.
+The hotkeys sit in `no-start-menu.ahk` next to the Start-menu suppression, so the scheduled task from section 2 already launches them — nothing separate to autostart. That task has to run elevated, otherwise UIPI blocks the hook from the elevated Terminal window and all six bindings fall through to the system. A round trip through `wsl.exe` costs about 95 ms; an elevated `wsl.exe` reaches the same distro instance and the same socket.
 
-In `config.toml` the six matching `[keys]` entries are set to `""`: the same jump must not exist on two paths. `prefix = "ctrl+z"` stays, because `focus_pane_*` hangs off it and pane navigation has no lwin equivalent — `lwin+←↑↓→` is taken by GlazeWM for focus by direction.
+In `config.toml` the six matching `[keys]` entries are set to `""`: the same jump must not exist on two paths. `prefix = "ctrl+z"` stays, because `focus_pane_*` hangs off it and pane navigation has no lwin equivalent. GlazeWM used to hold `lwin+←↑↓→` for focus by direction; that moved to `lwin+alt+h/j/k/l`, so the arrows are free now if pane focus should ever be lifted onto `lwin`.
 
 | Binding | Action |
 |---|---|
@@ -286,6 +318,39 @@ reg add "HKCU\Software\Classes\ms-gamingoverlay" /v "URL Protocol" /t REG_SZ /d 
 reg add "HKCU\Software\Classes\ms-gamingoverlay\shell\open\command" /ve /t REG_SZ /d "C:\Windows\System32\rundll32.exe" /f
 ```
 
+## 10. YASB
+
+The only bar on screen — the system taskbar is hidden for good in section 3. Placed here rather than next to GlazeWM to keep the section numbers stable; in practice it is installed right after it.
+
+```powershell
+winget install --id AmN.yasb -e
+Copy-Item yasb\config.yaml "$env:USERPROFILE\.config\yasb\config.yaml" -Force
+Copy-Item yasb\styles.css "$env:USERPROFILE\.config\yasb\styles.css" -Force
+reg add "HKCU\Software\Microsoft\Windows\CurrentVersion\Run" /v YASB /t REG_SZ /d "C:\Program Files\Yasb\yasb.exe" /f
+```
+
+| Setting | Value |
+|---|---|
+| position | top, centered, 100% width |
+| height | 36, padding 8 on top, left and right |
+| `windows_app_bar` | `true` — registers as an appbar, so the work area shrinks and GlazeWM tiles below the bar |
+| `always_on_top` | `false` |
+| left widgets | cpu, gpu, memory, disk c/d/g |
+| centre widgets | cava, media |
+| right widgets | glazewm_workspaces, systray, open_meteo, language, clock |
+
+`glazewm_workspaces` talks to GlazeWM over its IPC websocket, which is why the bar keeps working while GlazeWM runs unelevated and Terminal runs elevated — sockets are not subject to UIPI.
+
+Styling is matched to the window frames from section 1: `--border-radius` 8, `--border-radius2` 6, `--border-radius3` 4 against `corner_style: rounded`, and `border: 1px solid var(--border)` on `.widget` with `--border: #333735`. That one variable is used by 48 declarations — tooltips, context menus, the clock and audio popups, systray and media flyouts all take their border from it.
+
+`system_colors: true` makes YASB generate `yasb_colors.css` from the Windows accent colour on every start. `styles.css` imports it, but it is not tracked here — it is a generated file and would only ever conflict.
+
+Both `watch_config` and `watch_stylesheet` are on, so edits apply on save. Edits written from inside WSL over `/mnt/c` often fail to raise the change notification the watcher listens for; reload explicitly instead:
+
+```powershell
+& "C:\Program Files\Yasb\yasbc.exe" reload
+```
+
 ## Debugging
 
 The CLI works from WSL without elevation and needs no separate `start`:
@@ -296,3 +361,11 @@ The CLI works from WSL without elevation and needs no separate `start`:
 ```
 
 Calling it with no subcommand answers `Invalid argument` — that's the missing subcommand, not an interop problem. Config errors are written to `%USERPROFILE%\.glzr\glazewm\errors.log`.
+
+When every `lwin+*` binding stops working at once inside Terminal while the rest of the rice is fine, it is elevation, not herdr. `scripts\doctor.ps1` prints it directly; the manual check is:
+
+```powershell
+Get-Process AutoHotkey64, glazewm, WindowsTerminal | Select-Object ProcessName, Id
+```
+
+AutoHotkey must be elevated, GlazeWM must not be. Re-running `scripts\install-autostart.ps1` from an elevated shell restores both, plus the `DisableLockWorkstation` policy from section 6.

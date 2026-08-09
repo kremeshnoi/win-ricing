@@ -7,9 +7,9 @@
     --icons-font-fallback: "JetBrainsMono NFP", "JetBrainsMono Nerd Font Propo";
     --system-font: "Segoe UI Variable", "Segoe UI";
     --specialFont: "Segoe UI Variable", "Segoe UI";
-    --border-radius: 16;
-    --border-radius2: 14;
-    --border-radius3: 12;
+    --border-radius: 8;
+    --border-radius2: 6;
+    --border-radius3: 4;
     --border-radiusWallpapers: 10;
     --fontSize: 12px;
     --iconSize: 16px;
@@ -170,7 +170,7 @@
     --accentText: #18181b;
     --hover: var(--yasb-accent);
     --mutedBG: #3f3f42;
-    --border: #3f3f42;
+    --border: #333735;
     --redFlash: #e5e7eb;
     --subtext: #E5E7EB;
 
