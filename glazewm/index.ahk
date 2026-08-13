@@ -5,6 +5,17 @@
 ~LWin::Send "{Blind}{vkE8}"
 ~RWin::Send "{Blind}{vkE8}"
 
+!Space:: {
+    Send "{LAlt up}{RAlt up}"
+    Send "#{Space}"
+}
+
+#HotIf GetKeyState("Shift", "P")
+LCtrl & Tab::ShiftAltTab
+#HotIf
+
+LCtrl & Tab::AltTab
+
 #HotIf WinActive("ahk_exe WindowsTerminal.exe")
 <#h::HerdrNav("tab prev")
 <#l::HerdrNav("tab next")
