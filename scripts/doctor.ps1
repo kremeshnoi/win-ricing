@@ -47,14 +47,21 @@ $rows += [PSCustomObject]@{ Check = 'task autohotkey'; Value = $val; Ok = ($task
 $run = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -ErrorAction SilentlyContinue).GlazeWM
 $rows += [PSCustomObject]@{ Check = 'Run\GlazeWM'; Value = $(if ($run) { 'present' } else { 'absent' }); Ok = [bool]$run }
 
+$runTile = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -ErrorAction SilentlyContinue).'GlazeWM Autotiling'
+$rows += [PSCustomObject]@{ Check = 'Run\GlazeWM Autotiling'; Value = $(if ($runTile) { 'present' } else { 'absent' }); Ok = [bool]$runTile }
+
+$tileProc = Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
+    Where-Object { $_.CommandLine -like '*autotiling.ps1*' }
+$rows += [PSCustomObject]@{ Check = 'autotiling daemon'; Value = $(if ($tileProc) { "running, pid $($tileProc.ProcessId -join ',')" } else { 'not running' }); Ok = [bool]$tileProc }
+
 $lnk = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\no-start-menu.lnk"
 $rows += [PSCustomObject]@{ Check = 'old Startup shortcut'; Value = $(if (Test-Path -LiteralPath $lnk) { 'present' } else { 'absent' }); Ok = (-not (Test-Path -LiteralPath $lnk)) }
 
 $lock = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System' -ErrorAction SilentlyContinue).DisableLockWorkstation
 $rows += [PSCustomObject]@{ Check = 'DisableLockWorkstation'; Value = "$lock"; Ok = ($lock -eq 1) }
 
-$ahkFile = "$env:USERPROFILE\.glzr\glazewm\no-start-menu.ahk"
-$rows += [PSCustomObject]@{ Check = 'no-start-menu.ahk'; Value = $(if (Test-Path -LiteralPath $ahkFile) { 'deployed' } else { 'missing' }); Ok = (Test-Path -LiteralPath $ahkFile) }
+$ahkFile = "$env:USERPROFILE\.glzr\glazewm\index.ahk"
+$rows += [PSCustomObject]@{ Check = 'index.ahk'; Value = $(if (Test-Path -LiteralPath $ahkFile) { 'deployed' } else { 'missing' }); Ok = (Test-Path -LiteralPath $ahkFile) }
 
 $navOut = & wsl.exe -e /home/kremeshnoi/.local/bin/herdr-nav 2>&1
 $navOk  = "$navOut" -match 'usage: herdr-nav'
