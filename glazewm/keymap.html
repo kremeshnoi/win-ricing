@@ -1,0 +1,443 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>GlazeWM — keymap</title>
+<style>
+  *, *::before, *::after { box-sizing: border-box; }
+
+  :root {
+    --bg: #eef0f4;
+    --surface: #ffffff;
+    --ink: #14161c;
+    --ink-soft: #4a5060;
+    --ink-faint: #7a8194;
+    --rule: #d8dbe4;
+    --rule-soft: #e6e8ee;
+    --ws: #9a1f86;
+    --ws-bg: #f6e6f3;
+    --win: #1f4f96;
+    --win-bg: #e2ebf9;
+    --sys: #5b6070;
+    --sys-bg: #e7e9ee;
+    --key-face: #ffffff;
+    --key-edge: #c6cad6;
+    --key-shadow: rgba(20, 22, 28, 0.16);
+    --display: "Bahnschrift", "DIN Alternate", "Segoe UI Variable Display", system-ui, sans-serif;
+    --body: "Segoe UI", system-ui, -apple-system, sans-serif;
+    --mono: "Cascadia Mono", "Consolas", ui-monospace, "SF Mono", Menlo, monospace;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --bg: #0a0b0e;
+      --surface: #14161c;
+      --ink: #e9ebf2;
+      --ink-soft: #a7adbe;
+      --ink-faint: #767d90;
+      --rule: #262a34;
+      --rule-soft: #1d212a;
+      --ws: #ffbaf3;
+      --ws-bg: #2a1b28;
+      --win: #b9d7ff;
+      --win-bg: #171f2c;
+      --sys: #9aa1b4;
+      --sys-bg: #1c1f27;
+      --key-face: #1b1e26;
+      --key-edge: #333846;
+      --key-shadow: rgba(0, 0, 0, 0.6);
+    }
+  }
+
+  :root[data-theme="dark"] {
+    --bg: #0a0b0e;
+    --surface: #14161c;
+    --ink: #e9ebf2;
+    --ink-soft: #a7adbe;
+    --ink-faint: #767d90;
+    --rule: #262a34;
+    --rule-soft: #1d212a;
+    --ws: #ffbaf3;
+    --ws-bg: #2a1b28;
+    --win: #b9d7ff;
+    --win-bg: #171f2c;
+    --sys: #9aa1b4;
+    --sys-bg: #1c1f27;
+    --key-face: #1b1e26;
+    --key-edge: #333846;
+    --key-shadow: rgba(0, 0, 0, 0.6);
+  }
+
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--body);
+    font-size: 15px;
+    line-height: 1.5;
+    margin: 0;
+    padding: 40px 24px 64px;
+  }
+
+  .page {
+    max-width: 1180px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+  }
+
+  header {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    padding-bottom: 24px;
+    border-bottom: 2px solid var(--ink);
+  }
+
+  h1 {
+    font-family: var(--display);
+    font-weight: 600;
+    font-size: clamp(2rem, 1.3rem + 2.4vw, 3rem);
+    line-height: 1;
+    letter-spacing: 0.01em;
+    text-wrap: balance;
+    margin: 0;
+  }
+
+  .lede {
+    max-width: 62ch;
+    color: var(--ink-soft);
+    margin: 0;
+  }
+
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 4px;
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: baseline;
+    gap: 8px;
+    padding: 6px 12px 7px;
+    border: 1px solid var(--rule);
+    border-radius: 3px;
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+  }
+
+  .chip b {
+    font-family: var(--mono);
+    font-weight: 600;
+    font-size: 0.8rem;
+  }
+
+  .chip.ws { background: var(--ws-bg); border-color: var(--ws); }
+  .chip.ws b { color: var(--ws); }
+  .chip.win { background: var(--win-bg); border-color: var(--win); }
+  .chip.win b { color: var(--win); }
+
+  .grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+    gap: 20px;
+    align-items: start;
+  }
+
+  section {
+    background: var(--surface);
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 20px 20px 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  section.wide { grid-column: 1 / -1; }
+
+  h2 {
+    font-family: var(--display);
+    font-size: 0.82rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin: 0;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  h2 span {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--ink-faint);
+    font-weight: 400;
+  }
+
+  h2.ws { color: var(--ws); }
+  h2.win { color: var(--win); }
+  h2.sys { color: var(--sys); }
+
+  .rows {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    column-gap: 18px;
+    align-items: baseline;
+    overflow-x: auto;
+  }
+
+  .rows > * {
+    padding: 9px 0;
+    border-top: 1px solid var(--rule-soft);
+  }
+
+  .rows > :nth-child(1), .rows > :nth-child(2) { border-top: 0; }
+
+  .act { color: var(--ink); }
+  .act em { font-style: normal; color: var(--ink-faint); }
+
+  .chord {
+    display: flex;
+    align-items: center;
+    gap: 3px;
+    white-space: nowrap;
+  }
+
+  kbd {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    font-weight: 600;
+    line-height: 1;
+    padding: 5px 7px 6px;
+    border: 1px solid var(--key-edge);
+    border-bottom-width: 2px;
+    border-radius: 3px;
+    background: var(--key-face);
+    color: var(--ink);
+    box-shadow: 0 1px 0 var(--key-shadow);
+    font-variant-numeric: tabular-nums;
+  }
+
+  kbd.m-ws { color: var(--ws); border-color: var(--ws); background: var(--ws-bg); }
+  kbd.m-win { color: var(--win); border-color: var(--win); background: var(--win-bg); }
+  kbd.m-sys { color: var(--sys); border-color: var(--key-edge); background: var(--sys-bg); }
+
+  .plus {
+    color: var(--ink-faint);
+    font-family: var(--mono);
+    font-size: 0.7rem;
+  }
+
+  .or {
+    color: var(--ink-faint);
+    font-size: 0.75rem;
+    padding: 0 3px;
+  }
+
+  .note {
+    font-size: 0.85rem;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--rule-soft);
+    padding: 12px 0 14px;
+    margin: 0;
+  }
+
+  .note code, .act code {
+    font-family: var(--mono);
+    font-size: 0.8rem;
+    color: var(--ink-soft);
+  }
+
+  footer {
+    color: var(--ink-faint);
+    font-size: 0.82rem;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-top: 1px solid var(--rule);
+    padding-top: 18px;
+  }
+
+  footer code {
+    font-family: var(--mono);
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <header>
+    <h1>GlazeWM — keymap</h1>
+    <p class="lede">Two modifiers, splitting the work in half: <b>ctrl+shift</b> answers "where am I", <b>lwin</b> answers "what does this window do". A third modifier on top of the base always means "bring the window along".</p>
+    <div class="legend">
+      <span class="chip ws"><b>ctrl+shift</b> workspaces</span>
+      <span class="chip ws"><b>ctrl+shift+lwin</b> move the window</span>
+      <span class="chip win"><b>lwin</b> the window and the WM</span>
+    </div>
+  </header>
+
+  <div class="grid">
+    <section>
+      <h2 class="ws">Workspaces <span>focus</span></h2>
+      <div class="rows">
+        <div class="chord"><kbd class="m-ws">ctrl</kbd><span class="plus">+</span><kbd class="m-ws">shift</kbd><span class="plus">+</span><kbd>0</kbd></div>
+        <div class="act">desktop <em>— empty by default</em></div>
+
+        <div class="chord"><kbd class="m-ws">ctrl</kbd><span class="plus">+</span><kbd class="m-ws">shift</kbd><span class="plus">+</span><kbd>t</kbd></div>
+        <div class="act">terminal <em>— WindowsTerminal</em></div>
+
+        <div class="chord"><kbd class="m-ws">ctrl</kbd><span class="plus">+</span><kbd class="m-ws">shift</kbd><span class="plus">+</span><kbd>g</kbd></div>
+        <div class="act">chrome</div>
+
+        <div class="chord"><kbd class="m-ws">ctrl</kbd><span class="plus">+</span><kbd class="m-ws">shift</kbd><span class="plus">+</span><kbd>c</kbd></div>
+        <div class="act">claude</div>
+
+        <div class="chord"><kbd class="m-ws">ctrl</kbd><span class="plus">+</span><kbd class="m-ws">shift</kbd><span class="plus">+</span><kbd>s</kbd></div>
+        <div class="act">spotify</div>
+
+        <div class="chord"><kbd class="m-ws">ctrl</kbd><span class="plus">+</span><kbd class="m-ws">shift</kbd><span class="plus">+</span><kbd>d</kbd></div>
+        <div class="act">discord</div>
+
+        <div class="chord"><kbd class="m-ws">ctrl</kbd><span class="plus">+</span><kbd class="m-ws">shift</kbd><span class="plus">+</span><kbd>m</kbd></div>
+        <div class="act">telegram <em>— messenger</em></div>
+
+        <div class="chord"><kbd class="m-ws">ctrl</kbd><span class="plus">+</span><kbd class="m-ws">shift</kbd><span class="plus">+</span><kbd>o</kbd></div>
+        <div class="act">obsidian</div>
+
+        <div class="chord"><kbd class="m-ws">ctrl</kbd><span class="plus">+</span><kbd class="m-ws">shift</kbd><span class="plus">+</span><kbd>9</kbd></div>
+        <div class="act">misc <em>— everything no rule claims</em></div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd>tab</kbd></div>
+        <div class="act">previous workspace</div>
+      </div>
+      <p class="note"><code>lwin+tab</code> is the only workspace binding still on Win: <code>ctrl+shift+tab</code> belongs to the window switcher, in both directions.</p>
+    </section>
+
+    <section>
+      <h2 class="ws">Move the window <span>move + focus</span></h2>
+      <div class="rows">
+        <div class="chord"><kbd class="m-ws">ctrl</kbd><span class="plus">+</span><kbd class="m-ws">shift</kbd><span class="plus">+</span><kbd class="m-ws">lwin</kbd><span class="plus">+</span><kbd>key</kbd></div>
+        <div class="act">same key as the workspace above — the window goes there and the focus follows</div>
+      </div>
+      <p class="note"><code>ctrl+shift+lwin+m</code> sends the current window to telegram and switches to it. <code>shift</code> is part of the base, so "move" takes a third modifier rather than a second — and it is <code>lwin</code> rather than <code>alt</code> because Ctrl and Alt are swapped in the keyboard firmware.</p>
+
+      <h2 class="win" style="margin-top:6px">Focus within a workspace</h2>
+      <div class="rows">
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd class="m-win">alt</kbd><span class="plus">+</span><kbd>h</kbd><span class="or">/</span><kbd>j</kbd><span class="or">/</span><kbd>k</kbd><span class="or">/</span><kbd>l</kbd></div>
+        <div class="act">focus left / down / up / right</div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd class="m-win">shift</kbd><span class="plus">+</span><kbd>l</kbd></div>
+        <div class="act">cycle recent windows, across workspaces</div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd class="m-win">shift</kbd><span class="plus">+</span><kbd>←</kbd><span class="or">/</span><kbd>↓</kbd><span class="or">/</span><kbd>↑</kbd><span class="or">/</span><kbd>→</kbd></div>
+        <div class="act">move the window — it swaps with its neighbour</div>
+      </div>
+    </section>
+
+    <section>
+      <h2 class="win">Window <span>state</span></h2>
+      <div class="rows">
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd>q</kbd></div>
+        <div class="act">close</div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd>a</kbd></div>
+        <div class="act">fullscreen <em>— covers the YASB bar too</em></div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd class="m-win">shift</kbd><span class="plus">+</span><kbd>f</kbd></div>
+        <div class="act">floating, centred</div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd class="m-win">shift</kbd><span class="plus">+</span><kbd>v</kbd></div>
+        <div class="act">put the window back into tiling, or take it out</div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd>v</kbd></div>
+        <div class="act">flip the split direction <em>— holds until the focus changes</em></div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd>enter</kbd></div>
+        <div class="act">new terminal</div>
+      </div>
+      <p class="note">Autotiling picks the direction from the window's shape: the next window opens to the right of a wide one and below a tall one. That is why <code>lwin+v</code> only lasts until the next focus change — after that the daemon takes it back.</p>
+    </section>
+
+    <section>
+      <h2 class="win">Resize mode <span>lwin+r, then no modifiers</span></h2>
+      <div class="rows">
+        <div class="chord"><kbd>h</kbd><span class="or">/</span><kbd>←</kbd></div>
+        <div class="act">2% narrower</div>
+
+        <div class="chord"><kbd>l</kbd><span class="or">/</span><kbd>→</kbd></div>
+        <div class="act">2% wider</div>
+
+        <div class="chord"><kbd>k</kbd><span class="or">/</span><kbd>↑</kbd></div>
+        <div class="act">2% taller</div>
+
+        <div class="chord"><kbd>j</kbd><span class="or">/</span><kbd>↓</kbd></div>
+        <div class="act">2% shorter</div>
+
+        <div class="chord"><kbd>esc</kbd><span class="or">/</span><kbd>enter</kbd><span class="or">/</span><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd>r</kbd></div>
+        <div class="act">leave the mode</div>
+      </div>
+      <p class="note">The mode is sticky: while it is on, hjkl and the arrows drag borders instead of reaching the app.</p>
+    </section>
+
+    <section>
+      <h2 class="win">The WM itself <span>service</span></h2>
+      <div class="rows">
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd class="m-win">shift</kbd><span class="plus">+</span><kbd>r</kbd></div>
+        <div class="act">reload the config</div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd class="m-win">shift</kbd><span class="plus">+</span><kbd>w</kbd></div>
+        <div class="act">redraw windows <em>— after changing effects</em></div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd class="m-win">shift</kbd><span class="plus">+</span><kbd>p</kbd></div>
+        <div class="act">pause — every binding falls through to the system</div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd class="m-win">shift</kbd><span class="plus">+</span><kbd>e</kbd></div>
+        <div class="act">quit GlazeWM</div>
+      </div>
+    </section>
+
+    <section class="wide">
+      <h2 class="sys">Alongside, not GlazeWM <span>AutoHotkey · system</span></h2>
+      <div class="rows">
+        <div class="chord"><kbd class="m-sys">alt</kbd><span class="plus">+</span><kbd>space</kbd></div>
+        <div class="act">keyboard layout en / ru <em>— AutoHotkey, forwards to Win+Space; Ctrl+Shift no longer switches</em></div>
+
+        <div class="chord"><kbd class="m-sys">ctrl</kbd><span class="plus">+</span><kbd>tab</kbd></div>
+        <div class="act">window switcher <em>— AutoHotkey drives the real alt-tab; add shift to walk it backwards</em></div>
+
+        <div class="chord"><kbd class="m-sys">win</kbd><span class="plus">+</span><kbd class="m-sys">shift</kbd><span class="plus">+</span><kbd>s</kbd></div>
+        <div class="act">region screenshot <em>— works again, the lwin+shift+letter row is free</em></div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd>h</kbd><span class="or">/</span><kbd>l</kbd></div>
+        <div class="act">herdr: previous / next tab <em>— only while Windows Terminal is focused</em></div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd>k</kbd><span class="or">/</span><kbd>j</kbd></div>
+        <div class="act">herdr: previous / next agent</div>
+
+        <div class="chord"><kbd class="m-win">lwin</kbd><span class="plus">+</span><kbd class="m-win">shift</kbd><span class="plus">+</span><kbd>k</kbd><span class="or">/</span><kbd>j</kbd></div>
+        <div class="act">herdr: previous / next workspace</div>
+
+        <div class="chord"><kbd class="m-sys">win</kbd><span class="or">·</span><kbd class="m-sys">win</kbd><span class="plus">+</span><kbd>e</kbd><span class="or">·</span><kbd class="m-sys">win</kbd><span class="plus">+</span><kbd>p</kbd></div>
+        <div class="act">a lone Win press is neutralised by the script; explorer and projection stay with the system</div>
+      </div>
+      <p class="note">What <code>ctrl+shift</code> costs: apps lose <code>ctrl+shift+t</code> (new tab, reopen closed tab), <code>ctrl+shift+d</code>, <code>ctrl+shift+o</code> and <code>ctrl+shift+m</code>. Copy and paste in the terminal live on plain <code>ctrl+c</code> / <code>ctrl+v</code>, so <code>ctrl+shift+c</code> cost nothing. Window management deliberately stayed on <code>lwin</code> so that <code>ctrl+shift+←→</code> keeps selecting by word.</p>
+    </section>
+  </div>
+
+  <footer>
+    <div>Config: <code>%USERPROFILE%\.glzr\glazewm\config.yaml</code> · autotiling: <code>autotiling.ps1</code> · layout, switcher and herdr: <code>index.ahk</code></div>
+    <div>Mirrored in <code>win-ricing/glazewm/</code> · apply edits without restarting — <code>lwin+shift+r</code></div>
+  </footer>
+</div>
+
+</body>
+</html>
