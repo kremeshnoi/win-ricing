@@ -113,7 +113,7 @@ window_rules:
     match:
       - window_process: { regex: '(?i)^spotify$' }
 
-  - commands: ['move --workspace 9-misc']
+  - commands: ['move --workspace 9-misc', 'focus --workspace 9-misc']
     match:
       - window_process: { not_regex: '(?i)^(windowsterminal|chrome|claude|obsidian|telegram|discord|spotify|zebar)$' }
 
