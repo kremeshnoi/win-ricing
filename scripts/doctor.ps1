@@ -54,6 +54,13 @@ $tileProc = Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -Error
     Where-Object { $_.CommandLine -like '*autotiling.ps1*' }
 $rows += [PSCustomObject]@{ Check = 'autotiling daemon'; Value = $(if ($tileProc) { "running, pid $($tileProc.ProcessId -join ',')" } else { 'not running' }); Ok = [bool]$tileProc }
 
+$runLaunch = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -ErrorAction SilentlyContinue).'GlazeWM Autolaunch'
+$rows += [PSCustomObject]@{ Check = 'Run\GlazeWM Autolaunch'; Value = $(if ($runLaunch) { 'present' } else { 'absent' }); Ok = [bool]$runLaunch }
+
+$launchProc = Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
+    Where-Object { $_.CommandLine -like '*autolaunch.ps1*' }
+$rows += [PSCustomObject]@{ Check = 'autolaunch daemon'; Value = $(if ($launchProc) { "running, pid $($launchProc.ProcessId -join ',')" } else { 'not running' }); Ok = [bool]$launchProc }
+
 $lnk = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\no-start-menu.lnk"
 $rows += [PSCustomObject]@{ Check = 'old Startup shortcut'; Value = $(if (Test-Path -LiteralPath $lnk) { 'present' } else { 'absent' }); Ok = (-not (Test-Path -LiteralPath $lnk)) }
 
