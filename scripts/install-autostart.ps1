@@ -6,10 +6,11 @@ $AhkExe   = 'C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe'
 $AhkArg   = "$env:USERPROFILE\.glzr\glazewm\index.ahk"
 $GlazeExe = 'C:\Program Files\glzr.io\GlazeWM\glazewm.exe'
 $TileVbs  = "$env:USERPROFILE\.glzr\glazewm\autotiling.vbs"
+$LaunchVbs = "$env:USERPROFILE\.glzr\glazewm\autolaunch.vbs"
 $TaskPath = '\win-ricing\'
 $RunKey   = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
 
-foreach ($p in $AhkExe, $AhkArg, $GlazeExe, $TileVbs) {
+foreach ($p in $AhkExe, $AhkArg, $GlazeExe, $TileVbs, $LaunchVbs) {
     if (-not (Test-Path -LiteralPath $p)) { throw "not found: $p" }
 }
 
@@ -60,6 +61,10 @@ $tileCmd = "wscript.exe `"$TileVbs`""
 Set-ItemProperty -Path $RunKey -Name 'GlazeWM Autotiling' -Value $tileCmd -Type String
 Write-Host "Run\GlazeWM Autotiling = $tileCmd"
 
+$launchCmd = "wscript.exe `"$LaunchVbs`""
+Set-ItemProperty -Path $RunKey -Name 'GlazeWM Autolaunch' -Value $launchCmd -Type String
+Write-Host "Run\GlazeWM Autolaunch = $launchCmd"
+
 $policy = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System'
 if (-not (Test-Path -LiteralPath $policy)) { New-Item -Path $policy -Force | Out-Null }
 Set-ItemProperty -Path $policy -Name 'DisableLockWorkstation' -Value 1 -Type DWord
@@ -79,6 +84,12 @@ Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
     Where-Object { $_.CommandLine -like '*autotiling.ps1*' } |
     ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
 Start-Process -FilePath 'explorer.exe' -ArgumentList $TileVbs
+Start-Sleep -Seconds 2
+
+Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
+    Where-Object { $_.CommandLine -like '*autolaunch.ps1*' } |
+    ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+Start-Process -FilePath 'explorer.exe' -ArgumentList $LaunchVbs
 Start-Sleep -Seconds 2
 
 Write-Host ''
