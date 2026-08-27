@@ -74,9 +74,6 @@ workspaces:
   - name: '6-telegram'
     display_name: 'telegram'
     keep_alive: true
-  - name: '7-claude'
-    display_name: 'claude'
-    keep_alive: true
   - name: '8-obsidian'
     display_name: 'obsidian'
     keep_alive: true
@@ -91,31 +88,35 @@ window_rules:
       - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
         window_class: { regex: 'Chrome_WidgetWin_1|MozillaDialogClass' }
 
-  - commands: ['move --workspace 3-terminal', 'focus --workspace 3-terminal']
+  - commands: ['set-tiling', 'move --workspace 3-terminal', 'focus --workspace 3-terminal']
+    on: ['manage']
     match:
       - window_process: { regex: '(?i)^windowsterminal$' }
   - commands: ['move --workspace 2-chrome', 'focus --workspace 2-chrome']
+    on: ['manage']
     match:
       - window_process: { regex: '(?i)^chrome$' }
-  - commands: ['move --workspace 7-claude', 'focus --workspace 7-claude']
-    match:
-      - window_process: { regex: '(?i)^claude$' }
   - commands: ['move --workspace 8-obsidian', 'focus --workspace 8-obsidian']
+    on: ['manage']
     match:
       - window_process: { regex: '(?i)^obsidian$' }
   - commands: ['move --workspace 6-telegram', 'focus --workspace 6-telegram']
+    on: ['manage']
     match:
       - window_process: { regex: '(?i)^telegram$' }
   - commands: ['move --workspace 5-discord', 'focus --workspace 5-discord']
+    on: ['manage']
     match:
       - window_process: { regex: '(?i)^discord$' }
   - commands: ['move --workspace 4-spotify', 'focus --workspace 4-spotify']
+    on: ['manage']
     match:
       - window_process: { regex: '(?i)^spotify$' }
 
   - commands: ['move --workspace 9-misc', 'focus --workspace 9-misc']
+    on: ['manage']
     match:
-      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|claude|obsidian|telegram|discord|spotify|zebar)$' }
+      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|obsidian|telegram|discord|spotify|zebar)$' }
 
 binding_modes:
   - name: 'resize'
@@ -139,8 +140,6 @@ keybindings:
     bindings: ['ctrl+shift+t']
   - commands: ['focus --workspace 2-chrome']
     bindings: ['ctrl+shift+g']
-  - commands: ['focus --workspace 7-claude']
-    bindings: ['ctrl+shift+c']
   - commands: ['focus --workspace 8-obsidian']
     bindings: ['ctrl+shift+o']
   - commands: ['focus --workspace 5-discord']
@@ -160,8 +159,6 @@ keybindings:
     bindings: ['ctrl+shift+lwin+t']
   - commands: ['move --workspace 2-chrome', 'focus --workspace 2-chrome']
     bindings: ['ctrl+shift+lwin+g']
-  - commands: ['move --workspace 7-claude', 'focus --workspace 7-claude']
-    bindings: ['ctrl+shift+lwin+c']
   - commands: ['move --workspace 8-obsidian', 'focus --workspace 8-obsidian']
     bindings: ['ctrl+shift+lwin+o']
   - commands: ['move --workspace 5-discord', 'focus --workspace 5-discord']
