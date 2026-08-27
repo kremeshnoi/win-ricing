@@ -91,10 +91,10 @@ LCtrl & Tab::AltTab
 #HotIf WinActive("ahk_exe WindowsTerminal.exe")
 <#h::HerdrNav("tab prev")
 <#l::HerdrNav("tab next")
-<#k::HerdrNav("agent prev")
-<#j::HerdrNav("agent next")
-<#+k::HerdrNav("workspace prev")
-<#+j::HerdrNav("workspace next")
+<#k::HerdrNav("workspace prev")
+<#j::HerdrNav("workspace next")
+<#+k::HerdrNav("agent prev")
+<#+j::HerdrNav("agent next")
 #HotIf
 
 HerdrNav(cmd) {
