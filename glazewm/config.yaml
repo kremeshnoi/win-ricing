@@ -85,6 +85,8 @@ window_rules:
   - commands: ['ignore']
     match:
       - window_process: { regex: '(?i)^(zebar)$' }
+      - window_process: { regex: '(?i)^(snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp|peopleexperiencehost|windows\.internal\.shellcommon\.accountscontrol)$' }
+      - window_class: { regex: '(?i)^(Windows\.UI\.Core\.CoreWindow|Shell_TrayWnd|Shell_SecondaryTrayWnd|WorkerW|Progman)$' }
       - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
         window_class: { regex: 'Chrome_WidgetWin_1|MozillaDialogClass' }
 
@@ -116,7 +118,7 @@ window_rules:
   - commands: ['move --workspace 9-misc', 'focus --workspace 9-misc']
     on: ['manage']
     match:
-      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|obsidian|telegram|discord|spotify|zebar)$' }
+      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|obsidian|telegram|discord|spotify|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
 
 binding_modes:
   - name: 'resize'
