@@ -11,7 +11,6 @@ $launchers = @{
     '4-spotify'  = @('C:\Users\Alex\AppData\Roaming\Spotify\Spotify.exe')
     '5-discord'  = @('C:\Users\Alex\AppData\Local\Discord\Update.exe', '--processStart', 'Discord.exe')
     '6-telegram' = @('C:\Users\Alex\AppData\Roaming\Telegram Desktop\Telegram.exe')
-    '7-claude'   = @('explorer.exe', 'shell:AppsFolder\Claude_pzs8sxrjxfjjc!Claude')
     '8-obsidian' = @('C:\Users\Alex\AppData\Local\Obsidian\Obsidian.exe')
 }
 
