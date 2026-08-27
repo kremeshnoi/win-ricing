@@ -62,7 +62,7 @@
             "keys": "alt+shift+d"
         }
     ],
-    "launchMode": "maximized",
+    "launchMode": "default",
     "minimizeToNotificationArea": false,
     "newTabMenu": 
     [
