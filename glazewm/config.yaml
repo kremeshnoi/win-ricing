@@ -74,6 +74,8 @@ workspaces:
   - name: '6-telegram'
     display_name: 'telegram'
     keep_alive: true
+  - name: '7-league'
+    display_name: 'league'
   - name: '8-obsidian'
     display_name: 'obsidian'
     keep_alive: true
@@ -114,11 +116,16 @@ window_rules:
     on: ['manage']
     match:
       - window_process: { regex: '(?i)^spotify$' }
+  - commands: ['move --workspace 7-league', 'focus --workspace 7-league', 'set-fullscreen']
+    on: ['manage', 'focus', 'title_change']
+    run_once: false
+    match:
+      - window_process: { regex: '(?i)^league of legends$' }
 
   - commands: ['move --workspace 9-misc', 'focus --workspace 9-misc']
     on: ['manage']
     match:
-      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|obsidian|telegram|discord|spotify|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
+      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|obsidian|telegram|discord|spotify|league of legends|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
 
 binding_modes:
   - name: 'resize'
