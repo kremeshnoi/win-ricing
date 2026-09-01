@@ -2,6 +2,8 @@
 #SingleInstance Force
 #NoTrayIcon
 
+SetTimer SquareLeagueCorners, 400
+
 ~LWin::Send "{Blind}{vkE8}"
 ~RWin::Send "{Blind}{vkE8}"
 
@@ -99,4 +101,19 @@ LCtrl & Tab::AltTab
 
 HerdrNav(cmd) {
     SetTimer(() => Run('wsl.exe -e /home/kremeshnoi/.local/bin/herdr-nav ' cmd, , "Hide"), -1)
+}
+
+SquareLeagueCorners() {
+    DetectHiddenWindows true
+    for hwnd in WinGetList("ahk_exe League of Legends.exe")
+        SetSquareCorners(hwnd)
+}
+
+SetSquareCorners(hwnd) {
+    current := 0
+    if (DllCall("dwmapi\DwmGetWindowAttribute", "ptr", hwnd, "int", 33, "int*", &current, "int", 4) != 0)
+        return
+    if (current = 1)
+        return
+    DllCall("dwmapi\DwmSetWindowAttribute", "ptr", hwnd, "int", 33, "int*", 1, "int", 4)
 }
