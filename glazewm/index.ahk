@@ -2,7 +2,7 @@
 #SingleInstance Force
 #NoTrayIcon
 
-SetTimer SquareLeagueCorners, 400
+SetTimer SquareGameCorners, 400
 
 ~LWin::Send "{Blind}{vkE8}"
 ~RWin::Send "{Blind}{vkE8}"
@@ -107,10 +107,11 @@ HerdrNav(cmd) {
     SetTimer(() => Run('wsl.exe -e /home/kremeshnoi/.local/bin/herdr-nav ' cmd, , "Hide"), -1)
 }
 
-SquareLeagueCorners() {
+SquareGameCorners() {
     DetectHiddenWindows true
-    for hwnd in WinGetList("ahk_exe League of Legends.exe")
-        SetSquareCorners(hwnd)
+    for exe in ["League of Legends.exe", "Overwatch.exe"]
+        for hwnd in WinGetList("ahk_exe " exe)
+            SetSquareCorners(hwnd)
 }
 
 SetSquareCorners(hwnd) {
