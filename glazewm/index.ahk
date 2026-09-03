@@ -14,17 +14,21 @@ $!Space:: {
 
 SwitchLayout() {
     hwnd := DllCall("GetForegroundWindow", "ptr")
-    next := hwnd ? NextLayout(hwnd) : 0
+    target := hwnd ? FocusedControl(hwnd) : 0
+    next := target ? NextLayout(target) : 0
     if (!next) {
         Send "#{Space}"
         return
     }
 
-    DllCall("PostMessageW", "ptr", FocusedControl(hwnd), "uint", 0x0050, "ptr", 0, "ptr", next)
+    DllCall("PostMessageW", "ptr", target, "uint", 0x0050, "ptr", 0, "ptr", next)
+    if (target != hwnd)
+        DllCall("PostMessageW", "ptr", hwnd, "uint", 0x0050, "ptr", 0, "ptr", next)
+    DllCall("PostMessageW", "ptr", 0xFFFF, "uint", 0x0050, "ptr", 0, "ptr", next)
 
     loop 10 {
         Sleep 25
-        if (CurrentLayout(hwnd) = next)
+        if (CurrentLayout(target) = next)
             return
     }
     Send "#{Space}"
