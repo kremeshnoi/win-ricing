@@ -82,6 +82,8 @@ workspaces:
   - name: '9-misc'
     display_name: 'misc'
     keep_alive: true
+  - name: '10-overwatch'
+    display_name: 'overwatch'
 
 window_rules:
   - commands: ['ignore']
@@ -121,11 +123,16 @@ window_rules:
     run_once: false
     match:
       - window_process: { regex: '(?i)^league of legends$' }
+  - commands: ['move --workspace 10-overwatch', 'focus --workspace 10-overwatch', 'set-fullscreen']
+    on: ['manage', 'focus', 'title_change']
+    run_once: false
+    match:
+      - window_process: { regex: '(?i)^overwatch$' }
 
   - commands: ['move --workspace 9-misc', 'focus --workspace 9-misc']
     on: ['manage']
     match:
-      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|obsidian|telegram|discord|spotify|league of legends|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
+      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|obsidian|telegram|discord|spotify|league of legends|overwatch|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
 
 binding_modes:
   - name: 'resize'
