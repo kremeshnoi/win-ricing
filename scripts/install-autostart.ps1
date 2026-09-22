@@ -92,5 +92,21 @@ Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
 Start-Process -FilePath 'explorer.exe' -ArgumentList $LaunchVbs
 Start-Sleep -Seconds 2
 
+$GuardSrc = "$PSScriptRoot\spicetify-guard.ps1"
+$GuardDst = "$env:LOCALAPPDATA\spicetify\guard.ps1"
+if (Test-Path -LiteralPath $GuardSrc) {
+    Copy-Item -LiteralPath $GuardSrc -Destination $GuardDst -Force
+    $guardLogon = New-ScheduledTaskTrigger -AtLogOn -User $User
+    $guardEvery = New-ScheduledTaskTrigger -Once -At (Get-Date) `
+        -RepetitionInterval (New-TimeSpan -Minutes 30)
+    $guardAction = New-ScheduledTaskAction -Execute 'powershell.exe' `
+        -Argument "-NoProfile -ExecutionPolicy Bypass -WindowStyle Hidden -File `"$GuardDst`""
+    $guardPrincipal = New-ScheduledTaskPrincipal -UserId $User -LogonType Interactive -RunLevel Limited
+    Unregister-ScheduledTask -TaskPath $TaskPath -TaskName 'spicetify-guard' -Confirm:$false -ErrorAction SilentlyContinue
+    Register-ScheduledTask -TaskPath $TaskPath -TaskName 'spicetify-guard' `
+        -Action $guardAction -Trigger @($guardLogon, $guardEvery) -Principal $guardPrincipal -Settings $settings | Out-Null
+    Write-Host "task registered: ${TaskPath}spicetify-guard (every 30 min)"
+}
+
 Write-Host ''
 & "$PSScriptRoot\doctor.ps1"
