@@ -8,6 +8,7 @@ update_check: true
 bars:
   primary-bar:
     enabled: true
+    style: "adaptive"
     screens:
     - '*'
     class_name: yasb-bar
@@ -25,14 +26,15 @@ bars:
       windows_app_bar: true
     dimensions:
       width: 100%
-      height: 36
+      height: 40
     padding:
-      top: 8
-      left: 8
+      top: 0
+      left: 0
       bottom: 0
-      right: 8
+      right: 0
     widgets:
       left:
+      - home
       - cpu
       - gpu
       - memory
@@ -40,15 +42,50 @@ bars:
       - disk_d
       - disk_g
       center:
-      - cava
+      - audio_visualizer
       - media
+      - language
       right:
       - glazewm_workspaces
+      - lines
       - systray
+      - volume
+      - notifications
       - open_meteo
-      - language
       - clock
+      - control_center
 widgets:
+  home:
+    type: yasb.home.HomeWidget
+    options:
+      label: "<span>\udb80\uddd9</span>"
+      menu_list:
+      - title: User Home
+        path: '~'
+      - title: Download
+        path: ~\Downloads
+      - title: Documents
+        path: ~\Documents
+      - title: Pictures
+        path: ~\Pictures
+      - title: Wallpapers
+        path: D:\OneDrive\Pictures\Wallpapers\Themes
+      system_menu: true
+      power_menu: false
+      blur: false
+      round_corners: true
+      round_corners_type: normal
+      border_color: System
+      alignment: left
+      offset_left: -5
+  lines:
+    type: "yasb.custom.CustomWidget"
+    options:
+      label: "|"
+      label_alt: "|"
+      class_name: "separator-widget"
+      callbacks:
+        on_left: "do_nothing"
   clock:
     type: yasb.clock.ClockWidget
     options:
@@ -81,28 +118,33 @@ widgets:
         hide_label: false
         hide_duplicates: false
         hide_floating: false
-  cava:
-    type: "yasb.cava.CavaWidget"
+  audio_visualizer:
+    type: "yasb.audio_visualizer.AudioVisualizerWidget"
     options:
-      bar_height: 12
-      waveform: 0
-      waves: 0
-      monstercat: 0
-      sensitivity: 100
-      edge_fade: 1
-      min_bar_height: 0
-      gradient: 1
-      foreground: "#89b4fa"
-      gradient_color_1: '#74c7ec'
-      gradient_color_2: '#89b4fa'
-      gradient_color_3: '#cba6f7'
-      bars_number: 18
-      bar_spacing: 2
-      bar_width: 4
-      bar_type: "waves"
+      style: bars
+      height: 12
+      smoothness: 80
+      sensitivity: 50
+      auto_gain: true
       framerate: 60
-      sleep_timer: 2
-      hide_empty: true
+      freq_min: 500
+      freq_max: 12000
+      hide_idle: true
+      hide_idle_after: 2000
+      channels: stereo
+      mono_option: average
+      reverse: false
+      mirror: true
+      bars:
+        count: 10
+        width: 2
+        gap: 4
+      waves:
+        width: 80
+      dots:
+        count: 30
+        size: 1
+        gap: 2
   media:
     type: "yasb.media.MediaWidget"
     options:
@@ -134,7 +176,7 @@ widgets:
         round_corners: true
         round_corners_type: "normal"
         border_color: "system"
-        alignment: "right"
+        alignment: "center"
         direction: "down"
         offset_top: 6
         offset_left: 0
@@ -151,17 +193,16 @@ widgets:
       scrolling_label:
         enabled: false
         update_interval_ms: 33
-        style: "left"  # can be "left", "right", "bounce", "bounce-ease"
+        style: "left"
         separator: " | "
         label_padding: 0
         always_scroll: false
-      # Easing curve params: https://www.desmos.com/calculator/j7eamemxzi
         ease_slope: 20
         ease_pos: 0.8
         ease_min: 0.5
       progress_bar:
-        enabled: false       # Whether to enable the progress bar on the widget.
-        alignment: "bottom"  # The alignment of the progress bar inside the widget container. Can be "top", "bottom", or "center".
+        enabled: false
+        alignment: "bottom"
   cpu:
     type: "yasb.cpu.CpuWidget"
     options:
@@ -169,6 +210,28 @@ widgets:
       label_alt: "CPU {info[histograms][cpu_percent]}"
       update_interval: 2000
       hide_decimal: true
+      callbacks:
+        on_left: "toggle_label"
+        on_right: "toggle_menu"
+      histogram_icons:
+        - "\u2581"
+        - "\u2581"
+        - "\u2582"
+        - "\u2583"
+        - "\u2584"
+        - "\u2585"
+        - "\u2586"
+        - "\u2587"
+        - "\u2588"
+      histogram_num_columns: 8
+      menu:
+        enabled: true
+        show_graph: true
+        show_graph_grid: true
+        graph_history_size: 60
+        round_corners: true
+        border_color: None
+        blur: false
   gpu:
     type: "yasb.gpu.GpuWidget"
     options:
@@ -183,6 +246,17 @@ widgets:
       label_alt: "RAM {virtual_mem_free}/{virtual_mem_total}"
       update_interval: 5000
       hide_decimal: true
+      callbacks:
+        on_left: "toggle_label"
+        on_right: "toggle_menu"
+      menu:
+        enabled: true
+        show_graph: true
+        show_graph_grid: true
+        graph_history_size: 60
+        round_corners: true
+        border_color: None
+        blur: false
   disk_c:
     type: "yasb.disk.DiskWidget"
     options:
@@ -205,6 +279,7 @@ widgets:
       label: "{volume_label} {space[used][percent]}"
       label_alt: "{volume_label} {space[used][gb]} / {space[total][gb]}"
       volume_label: "G"
+      class_name: "disk-last"
       update_interval: 60
       decimal_display: 0
   open_meteo:
@@ -218,7 +293,7 @@ widgets:
     type: "yasb.language.LanguageWidget"
     options:
       label: "{lang[full_name]}"
-      label_alt: "{lang[language_code]}"
+      label_alt: "{lang[iso_language_code]}"
       update_interval: 1
       callbacks:
         on_left: "toggle_menu"
@@ -235,12 +310,52 @@ widgets:
         offset_left: 0
         show_layout_icon: true
         layout_icon: "\udb80\udf0c"
+  volume:
+    type: yasb.volume.VolumeWidget
+    options:
+      label: "<span>{icon}</span> {level}"
+      label_alt: "{level}"
+      tooltip: true
+      icons:
+        "muted": "\uf026"
+        "10": "\uf026"
+        "30": "\uf026"
+        "60": "\uf026"
+        "100": "\uf026"
+      callbacks:
+        on_left: toggle_volume_menu
+        on_right: toggle_mute
+      audio_menu:
+        blur: false
+        round_corners: true
+        round_corners_type: normal
+        border_color: system
+        alignment: right
+        direction: down
+        show_apps: true
+        show_app_labels: true
+        show_app_icons: true
+        show_apps_expanded: false
+        app_icons:
+          toggle_down: "\uf078"
+          toggle_up: "\uf078"
+  notifications:
+    type: yasb.notifications.NotificationsWidget
+    options:
+      label: "<span>\udb80\udc9e</span>"
+      label_alt: '{count} notifications'
+      hide_empty: true
+      tooltip: false
+      callbacks:
+        on_left: toggle_notification
+        on_right: do_nothing
+        on_middle: do_nothing
   systray:
     type: "yasb.systray.SystrayWidget"
     options:
       class_name: "systray"
-      label_collapsed: "\u25bc"
-      label_expanded: "\u25b6"
+      label_collapsed: "\uf078"
+      label_expanded: "\uf078"
       label_position: "left"
       icon_size: 16
       pin_click_modifier: "alt"
@@ -262,3 +377,85 @@ widgets:
         direction: "down"
         offset_top: 6
         offset_left: 0
+  control_center:
+    type: "yasb.control_center.ControlCenterWidget"
+    options:
+      label: "<span>\uf013</span>"
+      tooltip: true
+      sections_order:
+        - "system_controls"
+        - "quick_actions"
+        - "sliders"
+        - "power"
+        - "media"
+      popup:
+        alignment: "right"
+        direction: "down"
+        border_color: none
+        round_corners: false
+        blur: false
+        round_corners_type: normal
+        offset_top: 9
+        offset_left: 5
+      sections:
+        system_controls:
+          profile_image_size: 28
+          power_icon: "\ue7e8"
+          lock_icon: "\ue72e"
+          settings_icon: "\ue713"
+        quick_actions:
+          show: true
+          columns: 3
+          label_position: "default"
+          actions:
+            - id: "toggle_dnd"
+              label: "Do Not Disturb"
+              icon: "\uf285"
+            - id: "toggle_mute"
+              label: "Mute"
+              icon: "\ue74f"
+            - id: "toggle_mic_mute"
+              label: "Mic Mute"
+              icon: "\uf12e"
+            - id: "screenshot"
+              label: "Screenshot"
+              icon: "\ue91b"
+            - id: "touch_keyboard"
+              label: "Keyboard"
+              icon: "\ue765"
+            - id: "toggle_theme"
+              label: "Dark Mode"
+              icon: "\ue708"
+        sliders:
+          show: true
+          brightness:
+            show_slider: true
+            icon: "\ue706"
+            show_source_selector: true
+            source_selector_icon: "\ue972"
+          volume:
+            show_slider: true
+            icon: "\ue767"
+            show_source_selector: true
+            source_selector_icon: "\ue972"
+          microphone:
+            show_slider: true
+            icon: "\ue720"
+            show_source_selector: true
+            source_selector_icon: "\ue972"
+        media:
+          show: false
+          thumbnail_size: 36
+          thumbnail_radius: 4
+          icons:
+            prev_track: "\ue622"
+            next_track: "\ue623"
+            play: "\uf5b0"
+            pause: "\ue62e"
+        power:
+          show: false
+          power_plan_title: "Power Plan"
+          power_mode_title: "Power Mode"
+          button_menu_icon: "\ue76c"
+      callbacks:
+        on_left: "toggle_menu"
