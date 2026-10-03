@@ -8,10 +8,11 @@ if (-not $mutex.WaitOne(0)) { exit }
 $launchers = @{
     '2-chrome'   = @('C:\Program Files\Google\Chrome\Application\chrome.exe')
     '3-terminal' = @('wt.exe')
-    '4-spotify'  = @('C:\Users\Alex\AppData\Roaming\Spotify\Spotify.exe')
+    '4-spotify'  = @('wscript.exe', 'C:\Users\Alex\.glzr\glazewm\spotify.vbs')
     '5-discord'  = @('C:\Users\Alex\AppData\Local\Discord\Update.exe', '--processStart', 'Discord.exe')
     '6-telegram' = @('C:\Users\Alex\AppData\Roaming\Telegram Desktop\Telegram.exe')
     '8-obsidian' = @('C:\Users\Alex\AppData\Local\Obsidian\Obsidian.exe')
+    '9-claude'   = @('explorer.exe', 'shell:AppsFolder\Claude_pzs8sxrjxfjjc!Claude')
 }
 
 $pollInterval = 500
