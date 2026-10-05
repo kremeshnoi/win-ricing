@@ -7,10 +7,11 @@ $AhkArg   = "$env:USERPROFILE\.glzr\glazewm\index.ahk"
 $GlazeExe = 'C:\Program Files\glzr.io\GlazeWM\glazewm.exe'
 $TileVbs  = "$env:USERPROFILE\.glzr\glazewm\autotiling.vbs"
 $LaunchVbs = "$env:USERPROFILE\.glzr\glazewm\autolaunch.vbs"
+$EveVbs   = "$env:USERPROFILE\.glzr\glazewm\eve.vbs"
 $TaskPath = '\win-ricing\'
 $RunKey   = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
 
-foreach ($p in $AhkExe, $AhkArg, $GlazeExe, $TileVbs, $LaunchVbs) {
+foreach ($p in $AhkExe, $AhkArg, $GlazeExe, $TileVbs, $LaunchVbs, $EveVbs) {
     if (-not (Test-Path -LiteralPath $p)) { throw "not found: $p" }
 }
 
@@ -65,6 +66,10 @@ $launchCmd = "wscript.exe `"$LaunchVbs`""
 Set-ItemProperty -Path $RunKey -Name 'GlazeWM Autolaunch' -Value $launchCmd -Type String
 Write-Host "Run\GlazeWM Autolaunch = $launchCmd"
 
+$eveCmd = "wscript.exe `"$EveVbs`""
+Set-ItemProperty -Path $RunKey -Name 'GlazeWM Eve' -Value $eveCmd -Type String
+Write-Host "Run\GlazeWM Eve = $eveCmd"
+
 $policy = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System'
 if (-not (Test-Path -LiteralPath $policy)) { New-Item -Path $policy -Force | Out-Null }
 Set-ItemProperty -Path $policy -Name 'DisableLockWorkstation' -Value 1 -Type DWord
@@ -90,6 +95,12 @@ Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
     Where-Object { $_.CommandLine -like '*autolaunch.ps1*' } |
     ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
 Start-Process -FilePath 'explorer.exe' -ArgumentList $LaunchVbs
+Start-Sleep -Seconds 2
+
+Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
+    Where-Object { $_.CommandLine -like '*eve.ps1*' } |
+    ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
+Start-Process -FilePath 'explorer.exe' -ArgumentList $EveVbs
 Start-Sleep -Seconds 2
 
 Unregister-ScheduledTask -TaskPath $TaskPath -TaskName 'spicetify-guard' -Confirm:$false -ErrorAction SilentlyContinue
