@@ -9,6 +9,8 @@ bars:
   primary-bar:
     enabled: true
     style: "adaptive"
+    style_adaptive_exclude:
+    - eve_slots
     screens:
     - '*'
     class_name: yasb-bar
@@ -46,7 +48,8 @@ bars:
       - media
       - language
       right:
-      - glazewm_workspaces
+      - eve_slots
+      - workspace_menu
       - lines
       - systray
       - volume
@@ -86,6 +89,19 @@ widgets:
       class_name: "separator-widget"
       callbacks:
         on_left: "do_nothing"
+  eve_slots:
+    type: "yasb.custom.CustomWidget"
+    options:
+      label: "{data}"
+      label_alt: "{data}"
+      class_name: "eve-slots"
+      exec_options:
+        run_cmd: 'type C:\Users\Alex\.glzr\glazewm\eve-slots.txt'
+        run_interval: 400
+        return_format: "string"
+        hide_empty: true
+      callbacks:
+        on_left: "do_nothing"
   clock:
     type: yasb.clock.ClockWidget
     options:
@@ -103,21 +119,19 @@ widgets:
         show_week_numbers: true
       callbacks:
         on_left: toggle_calendar
-  glazewm_workspaces:
-    type: "glazewm.workspaces.GlazewmWorkspacesWidget"
+  workspace_menu:
+    type: "yasb.custom.CustomWidget"
     options:
-      offline_label: "GlazeWM Offline"
-      hide_if_offline: false
-      monitor_exclusive: true
-      enable_scroll_switching: true
-      app_icons:
-        enabled_populated: false
-        enabled_active: false
-        size: 12
-        max_icons: 0
-        hide_label: false
-        hide_duplicates: false
-        hide_floating: false
+      label: "{data}"
+      label_alt: "{data}"
+      class_name: "workspace-menu"
+      exec_options:
+        run_cmd: 'type C:\Users\Alex\.glzr\glazewm\workspace.txt'
+        run_interval: 200
+        return_format: "string"
+        hide_empty: true
+      callbacks:
+        on_left: 'exec wscript.exe C:\Users\Alex\.glzr\glazewm\workspaces.vbs'
   audio_visualizer:
     type: "yasb.audio_visualizer.AudioVisualizerWidget"
     options:
