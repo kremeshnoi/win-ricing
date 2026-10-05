@@ -1869,6 +1869,24 @@ which is 16 pixels same as the other sections. */
     color: var(--text);
 }
 
+/* EVE Slots */
+.eve-slots {
+    background-color: var(--background);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    margin: 12px 16px 6px 0px;
+    padding: 0px 8px;
+}
+
+.eve-slots .widget-container {
+    padding: 0px 4px;
+}
+
+/* Workspace Menu */
+.workspace-menu .widget-container {
+    padding: 4px 4px 2px 4px;
+}
+
 /* GlazeWM Tiling Direction */
 .glazewm-tiling-direction .label {
     font-family: var(--specialFont);
