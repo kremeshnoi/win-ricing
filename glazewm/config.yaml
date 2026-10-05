@@ -69,8 +69,8 @@ workspaces:
     display_name: 'discord'
   - name: '6-telegram'
     display_name: 'telegram'
-  - name: '7-league'
-    display_name: 'league'
+  - name: '7-eve'
+    display_name: 'eve'
   - name: '8-obsidian'
     display_name: 'obsidian'
   - name: '9-claude'
@@ -79,13 +79,12 @@ workspaces:
     display_name: 'games'
   - name: '11-misc'
     display_name: 'misc'
-  - name: '12-overwatch'
-    display_name: 'overwatch'
 
 window_rules:
   - commands: ['ignore']
     match:
       - window_process: { regex: '(?i)^(zebar)$' }
+      - window_class: { equals: 'AutoHotkeyGUI' }
       - window_process: { regex: '(?i)^(snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp|peopleexperiencehost|windows\.internal\.shellcommon\.accountscontrol)$' }
       - window_class: { regex: '(?i)^(Windows\.UI\.Core\.CoreWindow|Shell_TrayWnd|Shell_SecondaryTrayWnd|WorkerW|Progman)$' }
       - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
@@ -127,22 +126,16 @@ window_rules:
   - commands: ['move --workspace 10-games', 'focus --workspace 10-games']
     on: ['manage']
     match:
-      - window_process: { regex: '(?i)^(battle|battlenet|blizzardbrowser|blizzarderror|diablo|eaconnect_microsoft|eadesktop|ealauncher|epicgameslauncher|epicwebhelper|eve-o preview|eve-online|evelauncher|exefile|fortniteclient-win64-shipping|fortnitelauncher|gameoverlayui64|hearthstone|hearthstone beta launcher|hearthstonedecktracker|hellfire|heroes of the storm|heroesofthestorm_x64|heroesswitcher_x64|idlemasterextended|launcher|leagueclient|leagueclientux|leagueclientuxrender|link2ea|lion|lion-win64-shipping|lor|osu!|overwatch launcher|pokemon tcg live|riot client|riotclientservices|riotclientux|sheep|steam|steam-idle|steamerrorreporter|steamerrorreporter64|steamwebhelper|tekken-7-player-displayer|tera|tftclient|tftclient-win64-shipping|tormentum ii|ubisoftconnect|ubisoftgamelauncher|ubisoftgamelauncher64|unrealenginelauncher|upc|uplaywebcore|valorant|valorant-win64-shipping|warcraft iii|warcraft iii launcher|world editor)$' }
-  - commands: ['move --workspace 7-league', 'focus --workspace 7-league', 'set-fullscreen']
-    on: ['manage', 'focus', 'title_change']
-    run_once: false
+      - window_process: { regex: '(?i)^(battle|battlenet|blizzardbrowser|blizzarderror|diablo|eaconnect_microsoft|eadesktop|ealauncher|epicgameslauncher|epicwebhelper|eve-o preview|eve-online|evelauncher|fortniteclient-win64-shipping|fortnitelauncher|gameoverlayui64|hearthstone|hearthstone beta launcher|hearthstonedecktracker|hellfire|heroes of the storm|heroesofthestorm_x64|heroesswitcher_x64|idlemasterextended|launcher|leagueclient|leagueclientux|leagueclientuxrender|link2ea|lion|lion-win64-shipping|lor|osu!|overwatch launcher|pokemon tcg live|riot client|riotclientservices|riotclientux|sheep|steam|steam-idle|steamerrorreporter|steamerrorreporter64|steamwebhelper|tekken-7-player-displayer|tera|tftclient|tftclient-win64-shipping|tormentum ii|ubisoftconnect|ubisoftgamelauncher|ubisoftgamelauncher64|unrealenginelauncher|upc|uplaywebcore|valorant|valorant-win64-shipping|warcraft iii|warcraft iii launcher|world editor)$' }
+  - commands: ['move --workspace 7-eve', 'focus --workspace 7-eve']
+    on: ['manage']
     match:
-      - window_process: { regex: '(?i)^league of legends$' }
-  - commands: ['move --workspace 12-overwatch', 'focus --workspace 12-overwatch', 'set-fullscreen']
-    on: ['manage', 'focus', 'title_change']
-    run_once: false
-    match:
-      - window_process: { regex: '(?i)^overwatch$' }
+      - window_process: { regex: '(?i)^exefile$' }
 
   - commands: ['move --workspace 11-misc', 'focus --workspace 11-misc']
     on: ['manage']
     match:
-      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|obsidian|telegram|discord|spotify|claude|battle|battlenet|blizzardbrowser|blizzarderror|diablo|eaconnect_microsoft|eadesktop|ealauncher|epicgameslauncher|epicwebhelper|eve-o preview|eve-online|evelauncher|exefile|fortniteclient-win64-shipping|fortnitelauncher|gameoverlayui64|hearthstone|hearthstone beta launcher|hearthstonedecktracker|hellfire|heroes of the storm|heroesofthestorm_x64|heroesswitcher_x64|idlemasterextended|launcher|leagueclient|leagueclientux|leagueclientuxrender|link2ea|lion|lion-win64-shipping|lor|osu!|overwatch launcher|pokemon tcg live|riot client|riotclientservices|riotclientux|sheep|steam|steam-idle|steamerrorreporter|steamerrorreporter64|steamwebhelper|tekken-7-player-displayer|tera|tftclient|tftclient-win64-shipping|tormentum ii|ubisoftconnect|ubisoftgamelauncher|ubisoftgamelauncher64|unrealenginelauncher|upc|uplaywebcore|valorant|valorant-win64-shipping|warcraft iii|warcraft iii launcher|world editor|league of legends|overwatch|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
+      - window_process: { not_regex: '(?i)^(windowsterminal|chrome|obsidian|telegram|discord|spotify|claude|battle|battlenet|blizzardbrowser|blizzarderror|diablo|eaconnect_microsoft|eadesktop|ealauncher|epicgameslauncher|epicwebhelper|eve-o preview|eve-online|evelauncher|fortniteclient-win64-shipping|fortnitelauncher|gameoverlayui64|hearthstone|hearthstone beta launcher|hearthstonedecktracker|hellfire|heroes of the storm|heroesofthestorm_x64|heroesswitcher_x64|idlemasterextended|launcher|leagueclient|leagueclientux|leagueclientuxrender|link2ea|lion|lion-win64-shipping|lor|osu!|overwatch launcher|pokemon tcg live|riot client|riotclientservices|riotclientux|sheep|steam|steam-idle|steamerrorreporter|steamerrorreporter64|steamwebhelper|tekken-7-player-displayer|tera|tftclient|tftclient-win64-shipping|tormentum ii|ubisoftconnect|ubisoftgamelauncher|ubisoftgamelauncher64|unrealenginelauncher|upc|uplaywebcore|valorant|valorant-win64-shipping|warcraft iii|warcraft iii launcher|world editor|exefile|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
 
 binding_modes:
   - name: 'resize'
@@ -176,6 +169,8 @@ keybindings:
     bindings: ['ctrl+shift+c']
   - commands: ['focus --workspace 10-games']
     bindings: ['ctrl+shift+p']
+  - commands: ['focus --workspace 7-eve']
+    bindings: ['ctrl+shift+e']
   - commands: ['focus --workspace 11-misc']
     bindings: ['ctrl+shift+9']
   - commands: ['focus --workspace 4-spotify']
@@ -199,6 +194,8 @@ keybindings:
     bindings: ['ctrl+shift+lwin+c']
   - commands: ['move --workspace 10-games', 'focus --workspace 10-games']
     bindings: ['ctrl+shift+lwin+p']
+  - commands: ['move --workspace 7-eve', 'focus --workspace 7-eve']
+    bindings: ['ctrl+shift+lwin+e']
   - commands: ['move --workspace 11-misc', 'focus --workspace 11-misc']
     bindings: ['ctrl+shift+lwin+9']
   - commands: ['move --workspace 4-spotify', 'focus --workspace 4-spotify']
