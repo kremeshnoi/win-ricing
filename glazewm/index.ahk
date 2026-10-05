@@ -2,8 +2,6 @@
 #SingleInstance Force
 #NoTrayIcon
 
-SetTimer SquareGameCorners, 400
-
 ~LWin::Send "{Blind}{vkE8}"
 ~RWin::Send "{Blind}{vkE8}"
 
@@ -103,22 +101,28 @@ LCtrl & Tab::AltTab
 <#+j::HerdrNav("agent next")
 #HotIf
 
+#HotIf EveSpace()
+$Left::SignalEve("GlazeWmEvePrev")
+$Right::SignalEve("GlazeWmEveNext")
+#HotIf
+
+EveSpace() {
+    event := DllCall("OpenEventW", "uint", 0x00100000, "int", 0, "str", "GlazeWmEveSpace", "ptr")
+    if (!event)
+        return false
+    active := DllCall("WaitForSingleObject", "ptr", event, "uint", 0) = 0
+    DllCall("CloseHandle", "ptr", event)
+    return active
+}
+
+SignalEve(name) {
+    event := DllCall("OpenEventW", "uint", 0x0002, "int", 0, "str", name, "ptr")
+    if (!event)
+        return
+    DllCall("SetEvent", "ptr", event)
+    DllCall("CloseHandle", "ptr", event)
+}
+
 HerdrNav(cmd) {
     SetTimer(() => Run('wsl.exe -e /home/kremeshnoi/.local/bin/herdr-nav ' cmd, , "Hide"), -1)
-}
-
-SquareGameCorners() {
-    DetectHiddenWindows true
-    for exe in ["League of Legends.exe", "Overwatch.exe"]
-        for hwnd in WinGetList("ahk_exe " exe)
-            SetSquareCorners(hwnd)
-}
-
-SetSquareCorners(hwnd) {
-    current := 0
-    if (DllCall("dwmapi\DwmGetWindowAttribute", "ptr", hwnd, "int", 33, "int*", &current, "int", 4) != 0)
-        return
-    if (current = 1)
-        return
-    DllCall("dwmapi\DwmSetWindowAttribute", "ptr", hwnd, "int", 33, "int*", 1, "int", 4)
 }
