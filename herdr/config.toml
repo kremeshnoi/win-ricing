@@ -20,10 +20,17 @@ enabled = false
 name = "vesper"
 auto_switch = false
 
+[theme.custom]
+panel_bg = "reset"
+sidebar_bg = "reset"
+active_row_bg = "reset"
+selection_bg = "reset"
+
 [ui]
 host_cursor = "native"
 show_agent_labels_on_pane_borders = true
 
 agent_panel_sort = "spaces"
+status_indicators = "symbols"
 [experimental]
 switch_ascii_input_source_in_prefix = true
