@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
 import json
+import socket
 import subprocess
 import sys
 
 HERDR = "/home/linuxbrew/.linuxbrew/bin/herdr"
+PORT = 47391
 
 
 def call(*args):
@@ -55,8 +57,33 @@ def nav_workspace(direction):
 
 ACTIONS = {"tab": nav_tab, "agent": nav_agent, "workspace": nav_workspace}
 
-if len(sys.argv) != 3 or sys.argv[1] not in ACTIONS or sys.argv[2] not in ("next", "prev"):
-    print("usage: herdr-nav <tab|agent|workspace> <next|prev>", file=sys.stderr)
-    sys.exit(2)
 
-ACTIONS[sys.argv[1]](sys.argv[2])
+def run(args):
+    if len(args) != 2 or args[0] not in ACTIONS or args[1] not in ("next", "prev"):
+        return False
+    ACTIONS[args[0]](args[1])
+    return True
+
+
+def serve():
+    srv = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    srv.setsockopt(socket.SOL_SOCKET, socket.SO_REUSEADDR, 1)
+    srv.bind(("127.0.0.1", PORT))
+    srv.listen(16)
+    while True:
+        conn, _ = srv.accept()
+        with conn:
+            conn.settimeout(1)
+            line = ""
+            try:
+                line = conn.makefile().readline()
+                run(line.split())
+            except Exception as e:
+                print(f"{line.strip()}: {e}", file=sys.stderr, flush=True)
+
+
+if sys.argv[1:] == ["serve"]:
+    serve()
+elif not run(sys.argv[1:]):
+    print("usage: herdr-nav <tab|agent|workspace> <next|prev> | serve", file=sys.stderr)
+    sys.exit(2)
