@@ -1,5 +1,5 @@
 # Windows ricing
-Windows 11 rice: tiling WM, taskbar on top with no Start button, a launcher instead of the Start menu, key remaps, agent navigation inside WSL, and a Spotify theme.
+Windows 11 rice: tiling WM, taskbar on top with no Start button, a launcher instead of the Start menu, key remaps, and agent navigation inside WSL.
 
 Verified on Windows 11 25H2, build 26200.
 
@@ -18,6 +18,5 @@ Verified on Windows 11 25H2, build 26200.
 | Windows Terminal | — | WSL host, the only window herdr bindings are scoped to |
 | [herdr](https://herdr.dev) | 0.7.5 | terminal workspace manager for AI agents, runs inside WSL |
 | [Raycast](https://www.raycast.com/windows) | — | launcher replacing the Start menu |
-| [Spicetify](https://spicetify.app) | 2.44.0 | Spotify theme |
 | — | — | Xbox Game Bar removed to free up Win+G |
 | — | — | `DisableLockWorkstation` policy set to free up Win+L |
