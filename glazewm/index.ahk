@@ -124,5 +124,17 @@ SignalEve(name) {
 }
 
 HerdrNav(cmd) {
+    static ready := DllCall("Ws2_32\WSAStartup", "ushort", 0x0202, "ptr", Buffer(408, 0))
+    sock := DllCall("Ws2_32\socket", "int", 2, "int", 1, "int", 6, "ptr")
+    addr := Buffer(16, 0)
+    NumPut("ushort", 2, "ushort", DllCall("Ws2_32\htons", "ushort", 47391, "ushort"), "uint", 0x0100007F, addr)
+    if (DllCall("Ws2_32\connect", "ptr", sock, "ptr", addr, "int", 16) = 0) {
+        msg := Buffer(StrPut(cmd "`n", "UTF-8"))
+        StrPut(cmd "`n", msg, "UTF-8")
+        DllCall("Ws2_32\send", "ptr", sock, "ptr", msg, "int", msg.Size - 1, "int", 0)
+        DllCall("Ws2_32\closesocket", "ptr", sock)
+        return
+    }
+    DllCall("Ws2_32\closesocket", "ptr", sock)
     SetTimer(() => Run('wsl.exe -e /home/kremeshnoi/.local/bin/herdr-nav ' cmd, , "Hide"), -1)
 }
