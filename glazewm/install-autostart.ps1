@@ -103,8 +103,5 @@ Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
 Start-Process -FilePath 'explorer.exe' -ArgumentList $EveVbs
 Start-Sleep -Seconds 2
 
-Unregister-ScheduledTask -TaskPath $TaskPath -TaskName 'spicetify-guard' -Confirm:$false -ErrorAction SilentlyContinue
-Remove-Item -LiteralPath "$env:LOCALAPPDATA\spicetify\guard.ps1", "$env:LOCALAPPDATA\spicetify\guard.vbs" -Force -ErrorAction SilentlyContinue
-
 Write-Host ''
 & "$PSScriptRoot\doctor.ps1"
