@@ -6,13 +6,15 @@ $mutex = New-Object System.Threading.Mutex($false, 'GlazeWmWorkspaceAutolaunch')
 if (-not $mutex.WaitOne(0)) { exit }
 
 $launchers = @{
-    '2-chrome'   = @('C:\Program Files\Google\Chrome\Application\chrome.exe')
-    '3-terminal' = @('wt.exe')
-    '4-spotify'  = @('C:\Users\Alex\AppData\Roaming\Spotify\Spotify.exe')
-    '5-discord'  = @('C:\Users\Alex\AppData\Local\Discord\Update.exe', '--processStart', 'Discord.exe')
-    '6-telegram' = @('C:\Users\Alex\AppData\Roaming\Telegram Desktop\Telegram.exe')
-    '8-obsidian' = @('C:\Users\Alex\AppData\Local\Obsidian\Obsidian.exe')
-    '9-claude'   = @('explorer.exe', 'shell:AppsFolder\Claude_pzs8sxrjxfjjc!Claude')
+    '3-terminal'  = @('wt.exe')
+    '4-chrome'    = @('C:\Program Files\Google\Chrome\Application\chrome.exe')
+    '5-claude'    = @('explorer.exe', 'shell:AppsFolder\Claude_pzs8sxrjxfjjc!Claude')
+    '6-obsidian'  = @('C:\Users\Alex\AppData\Local\Obsidian\Obsidian.exe')
+    '7-docker'    = @('C:\Program Files\Docker\Docker\Docker Desktop.exe')
+    '8-tabularis' = @('C:\Users\Alex\AppData\Local\tabularis\tabularis.exe')
+    '9-spotify'   = @('C:\Users\Alex\AppData\Roaming\Spotify\Spotify.exe')
+    '10-discord'  = @('C:\Users\Alex\AppData\Local\Discord\Update.exe', '--processStart', 'Discord.exe')
+    '11-telegram' = @('C:\Users\Alex\AppData\Roaming\Telegram Desktop\Telegram.exe')
 }
 
 $pollInterval = 500
