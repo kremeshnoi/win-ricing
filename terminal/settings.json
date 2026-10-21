@@ -38,7 +38,7 @@
     "compatibility.enableUnfocusedAcrylic": false,
     "copyFormatting": "none",
     "copyOnSelect": false,
-    "defaultProfile": "{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}",
+    "defaultProfile": "{628e09e7-a9d7-5f99-b897-7584bcfd202b}",
     "disabledProfileSources": 
     [
         "Windows.Terminal.VisualStudio"
@@ -98,18 +98,19 @@
             },
             {
                 "colorScheme": "Hyper",
+                "commandline": "wsl.exe -d NixOS --cd ~",
                 "cursorShape": "bar",
                 "font": 
                 {
                     "face": "JetBrainsMono Nerd Font"
                 },
-                "guid": "{4ff56d04-d9cf-57ea-bae2-ad396374e7e3}",
+                "guid": "{628e09e7-a9d7-5f99-b897-7584bcfd202b}",
                 "hidden": false,
                 "icon": "C:\\Users\\Alex\\OneDrive\\Pictures\\favicon-32x32.png",
                 "intenseTextStyle": "all",
-                "name": "Ubuntu",
+                "name": "NixOS",
                 "opacity": 85,
-                "source": "CanonicalGroupLimited.Ubuntu22.04LTS_79rhkp1fndgsc",
+                "source": "Microsoft.WSL",
                 "useAcrylic": false
             }
         ]
