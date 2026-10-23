@@ -99,6 +99,9 @@ LCtrl & Tab::AltTab
 <#j::HerdrNav("workspace next")
 <#+k::HerdrNav("agent prev")
 <#+j::HerdrNav("agent next")
+<#+h::HerdrNav("pane left")
+<#+l::HerdrNav("pane right")
+<#+n::HerdrNav("nvim-sessions")
 #HotIf
 
 #HotIf EveSpace()
