@@ -4,9 +4,12 @@ Windows 11 rice: tiling WM, taskbar on top with no Start button, a launcher inst
 Verified on Windows 11 25H2, build 26200.
 
 ## Showcase
-<img width="1920" height="1080" alt="{E5FB1AC5-4EA5-42F4-9D07-5F2A9E45A96B}" src="https://github.com/user-attachments/assets/d08bb3b2-a0a1-4b73-a2cf-741238599411" />
-<img width="3840" height="2160" alt="image" src="https://github.com/user-attachments/assets/14f9afb5-e8e1-48c8-968b-64c465a5595c" />
-
+<img width="1920" height="1080" alt="{70289B8C-30DD-4F80-B4C3-0A63F159E72F}" src="https://github.com/user-attachments/assets/660f2302-d004-4a36-95a8-27c790afd217" />
+<img width="1920" height="1080" alt="{709A015F-4A30-49CC-A2A1-4F5C72898CC4}" src="https://github.com/user-attachments/assets/3eaa1498-caac-4bf7-9b41-99fdee3fe388" />
+<img width="1920" height="1080" alt="{F52221E2-6C81-47CA-B01E-0CF422F4CEEA}" src="https://github.com/user-attachments/assets/26c13d02-ad48-42b9-a53f-275f8e5d3edd" />
+<img width="1920" height="1080" alt="{1348BCEE-67D7-4571-9090-7D948CEF8E8E}" src="https://github.com/user-attachments/assets/20cbfba4-55e8-4360-ac05-8b0be04dbcf5" />
+<img width="1920" height="1080" alt="{D8751E22-5F0C-46EB-8EF7-99F8DE594522}" src="https://github.com/user-attachments/assets/74f88382-042a-45b5-96ed-96ee3c325346" />
+<img width="1920" height="1080" alt="{41DA1090-0E85-45B0-B875-BB713DB2EC1E}" src="https://github.com/user-attachments/assets/1c3dbb30-f8e1-48ff-afea-4999a6fbd4e5" />
 
 ## Stack
 | Component | Version | Role |
