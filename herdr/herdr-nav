@@ -55,11 +55,27 @@ def nav_workspace(direction):
         call("workspace", "focus", target["workspace_id"])
 
 
+def nav_pane(direction):
+    call("pane", "focus", "--current", "--direction", direction)
+
+
+def nvim_sessions():
+    subprocess.run([HERDR, "plugin", "action", "invoke", "kremeshnoi.nvim-sessions.toggle"], capture_output=True)
+
+
 ACTIONS = {"tab": nav_tab, "agent": nav_agent, "workspace": nav_workspace}
 
 
 def run(args):
-    if len(args) != 2 or args[0] not in ACTIONS or args[1] not in ("next", "prev"):
+    if args == ["nvim-sessions"]:
+        nvim_sessions()
+        return True
+    if len(args) != 2:
+        return False
+    if args[0] == "pane" and args[1] in ("left", "right", "up", "down"):
+        nav_pane(args[1])
+        return True
+    if args[0] not in ACTIONS or args[1] not in ("next", "prev"):
         return False
     ACTIONS[args[0]](args[1])
     return True
@@ -85,5 +101,5 @@ def serve():
 if sys.argv[1:] == ["serve"]:
     serve()
 elif not run(sys.argv[1:]):
-    print("usage: herdr-nav <tab|agent|workspace> <next|prev> | serve", file=sys.stderr)
+    print("usage: herdr-nav <tab|agent|workspace> <next|prev> | pane <left|right|up|down> | nvim-sessions | serve", file=sys.stderr)
     sys.exit(2)
