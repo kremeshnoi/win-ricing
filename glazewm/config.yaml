@@ -99,7 +99,7 @@ window_rules:
   - commands: ['set-tiling', 'move --workspace 3-terminal', 'focus --workspace 3-terminal']
     on: ['manage']
     match:
-      - window_process: { regex: '(?i)^windowsterminal$' }
+      - window_process: { regex: '(?i)^(windowsterminal|optimum)$' }
   - commands: ['move --workspace 4-chrome', 'focus --workspace 4-chrome']
     on: ['manage']
     match:
@@ -154,7 +154,7 @@ window_rules:
   - commands: ['move --workspace 14-misc', 'focus --workspace 14-misc']
     on: ['manage']
     match:
-      - window_process: { not_regex: '(?i)^(windowsterminal|systemsettings|taskmgr|mmc|regedit|resmon|msinfo32|docker desktop|tabularis|chrome|obsidian|telegram|discord|spotify|claude|battle|battlenet|blizzardbrowser|blizzarderror|diablo|eaconnect_microsoft|eadesktop|ealauncher|epicgameslauncher|epicwebhelper|eve-o preview|eve-online|evelauncher|fortniteclient-win64-shipping|fortnitelauncher|gameoverlayui64|hearthstone|hearthstone beta launcher|hearthstonedecktracker|hellfire|heroes of the storm|heroesofthestorm_x64|heroesswitcher_x64|idlemasterextended|launcher|leagueclient|leagueclientux|leagueclientuxrender|link2ea|lion|lion-win64-shipping|lor|osu!|overwatch launcher|pokemon tcg live|riot client|riotclientservices|riotclientux|sheep|steam|steam-idle|steamerrorreporter|steamerrorreporter64|steamwebhelper|tekken-7-player-displayer|tera|tftclient|tftclient-win64-shipping|tormentum ii|ubisoftconnect|ubisoftgamelauncher|ubisoftgamelauncher64|unrealenginelauncher|upc|uplaywebcore|valorant|valorant-win64-shipping|warcraft iii|warcraft iii launcher|world editor|exefile|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
+      - window_process: { not_regex: '(?i)^(windowsterminal|optimum|systemsettings|taskmgr|mmc|regedit|resmon|msinfo32|docker desktop|tabularis|chrome|obsidian|telegram|discord|spotify|claude|battle|battlenet|blizzardbrowser|blizzarderror|diablo|eaconnect_microsoft|eadesktop|ealauncher|epicgameslauncher|epicwebhelper|eve-o preview|eve-online|evelauncher|fortniteclient-win64-shipping|fortnitelauncher|gameoverlayui64|hearthstone|hearthstone beta launcher|hearthstonedecktracker|hellfire|heroes of the storm|heroesofthestorm_x64|heroesswitcher_x64|idlemasterextended|launcher|leagueclient|leagueclientux|leagueclientuxrender|link2ea|lion|lion-win64-shipping|lor|osu!|overwatch launcher|pokemon tcg live|riot client|riotclientservices|riotclientux|sheep|steam|steam-idle|steamerrorreporter|steamerrorreporter64|steamwebhelper|tekken-7-player-displayer|tera|tftclient|tftclient-win64-shipping|tormentum ii|ubisoftconnect|ubisoftgamelauncher|ubisoftgamelauncher64|unrealenginelauncher|upc|uplaywebcore|valorant|valorant-win64-shipping|warcraft iii|warcraft iii launcher|world editor|exefile|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
 
 binding_modes:
   - name: 'resize'
@@ -269,7 +269,7 @@ keybindings:
   - commands: ['wm-enable-binding-mode --name resize']
     bindings: ['ctrl+alt+r']
 
-  - commands: ['shell-exec wt']
+  - commands: ['shell-exec C:\Users\Alex\AppData\Local\Programs\Optimum\optimum.exe']
     bindings: ['ctrl+enter']
 
   - commands: ['wm-reload-config']
