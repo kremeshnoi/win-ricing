@@ -92,7 +92,7 @@ LCtrl & Tab::ShiftAltTab
 
 LCtrl & Tab::AltTab
 
-#HotIf WinActive("ahk_exe WindowsTerminal.exe")
+#HotIf WinActive("ahk_exe WindowsTerminal.exe") || WinActive("ahk_exe optimum.exe")
 <#h::HerdrNav("tab prev")
 <#l::HerdrNav("tab next")
 <#k::HerdrNav("workspace prev")
