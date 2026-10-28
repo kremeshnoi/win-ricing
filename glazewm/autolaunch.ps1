@@ -6,7 +6,7 @@ $mutex = New-Object System.Threading.Mutex($false, 'GlazeWmWorkspaceAutolaunch')
 if (-not $mutex.WaitOne(0)) { exit }
 
 $launchers = @{
-    '3-terminal'  = @('wt.exe')
+    '3-terminal'  = @('C:\Users\Alex\AppData\Local\Programs\Optimum\optimum.exe')
     '4-chrome'    = @('C:\Program Files\Google\Chrome\Application\chrome.exe')
     '5-claude'    = @('explorer.exe', 'shell:AppsFolder\Claude_pzs8sxrjxfjjc!Claude')
     '6-obsidian'  = @('C:\Users\Alex\AppData\Local\Obsidian\Obsidian.exe')
