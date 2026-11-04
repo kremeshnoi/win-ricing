@@ -4,6 +4,7 @@ import shutil
 import socket
 import subprocess
 import sys
+import time
 
 HERDR = shutil.which("herdr") or "/run/current-system/sw/bin/herdr"
 PORT = 47391
@@ -64,12 +65,26 @@ def nvim_sessions():
     subprocess.run([HERDR, "plugin", "action", "invoke", "kremeshnoi.nvim-sessions.toggle"], capture_output=True)
 
 
+def reviewr():
+    subprocess.run([HERDR, "plugin", "action", "invoke", "toggle", "--plugin", "persiyanov.reviewr"], capture_output=True)
+    for _ in range(30):
+        tabs = [t for t in call("tab", "list")["tabs"] if t.get("label") == "reviewr"]
+        if tabs:
+            for tab in tabs:
+                call("tab", "rename", tab["tab_id"], "Git Review")
+                call("tab", "focus", tab["tab_id"])
+            return
+        time.sleep(0.1)
+
+
+COMMANDS = {"nvim-sessions": nvim_sessions, "reviewr": reviewr}
+
 ACTIONS = {"tab": nav_tab, "agent": nav_agent, "workspace": nav_workspace}
 
 
 def run(args):
-    if args == ["nvim-sessions"]:
-        nvim_sessions()
+    if len(args) == 1 and args[0] in COMMANDS:
+        COMMANDS[args[0]]()
         return True
     if len(args) != 2:
         return False
@@ -102,5 +117,5 @@ def serve():
 if sys.argv[1:] == ["serve"]:
     serve()
 elif not run(sys.argv[1:]):
-    print("usage: herdr-nav <tab|agent|workspace> <next|prev> | pane <left|right|up|down> | nvim-sessions | serve", file=sys.stderr)
+    print("usage: herdr-nav <tab|agent|workspace> <next|prev> | pane <left|right|up|down> | nvim-sessions | reviewr | serve", file=sys.stderr)
     sys.exit(2)
