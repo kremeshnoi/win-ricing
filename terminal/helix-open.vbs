@@ -1,6 +1,6 @@
 Set shell = CreateObject("WScript.Shell")
-file = WScript.Arguments(0)
-optimum = shell.ExpandEnvironmentStrings("%LOCALAPPDATA%\Programs\Optimum\optimum.exe")
+optimum = WScript.Arguments(0)
+file = WScript.Arguments(1)
 glazewm = "C:\Program Files\glzr.io\GlazeWM\cli\glazewm.exe"
 shell.Run """" & optimum & """", 1, False
 shell.Run """" & glazewm & """ command focus --workspace 3-terminal", 0, False

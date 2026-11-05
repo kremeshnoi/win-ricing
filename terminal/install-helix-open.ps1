@@ -5,24 +5,53 @@ $ProgId     = 'HelixTerminal.File'
 $AppName    = 'Helix (Optimum)'
 $Dir        = "$env:LOCALAPPDATA\HelixTerminal"
 $Vbs        = "$Dir\helix-open.vbs"
-$Icon       = "$env:LOCALAPPDATA\Programs\Optimum\optimum.exe,0"
 $Classes    = 'Software\Classes'
 $App        = 'Software\HelixTerminal'
 $Registered = 'Software\RegisteredApplications'
 $Previous   = 'HelixTerminal.Previous'
 $Hkcu       = [Microsoft.Win32.Registry]::CurrentUser
+$FileExts   = 'Software\Microsoft\Windows\CurrentVersion\Explorer\FileExts'
+
+$Optimum = @("$env:ProgramFiles\Optimum\optimum.exe", "$env:LOCALAPPDATA\Programs\Optimum\optimum.exe") |
+    Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+if (-not $Uninstall -and -not $Optimum) { throw 'optimum.exe not found' }
+$Icon = "`"$Optimum`",0"
 
 $Extensions = @(
-    '.', '.txt', '.md', '.markdown', '.log', '.json', '.jsonc', '.yaml', '.yml', '.toml', '.ini', '.cfg', '.conf',
-    '.csv', '.tsv', '.xml', '.env', '.lock', '.editorconfig', '.gitignore', '.rs', '.ts', '.tsx', '.js', '.jsx',
-    '.mjs', '.cjs', '.vue', '.py', '.go', '.rb', '.php', '.twig', '.java', '.kt', '.kts', '.clj', '.edn', '.sh',
-    '.bash', '.zsh', '.lua', '.nix', '.css', '.scss', '.sql', '.c', '.h', '.cpp', '.hpp'
+    '.', '.txt', '.text', '.md', '.markdown', '.rst', '.adoc', '.org', '.log', '.out', '.srt', '.vtt', '.nfo', '.diz',
+    '.json', '.jsonc', '.json5', '.jsonl', '.ndjson', '.yaml', '.yml', '.toml', '.ini', '.cfg', '.conf', '.config',
+    '.properties', '.env', '.lock', '.csv', '.tsv', '.xml', '.xsd', '.xsl', '.plist', '.manifest', '.lst',
+    '.vdf', '.acf', '.vcfg', '.editorconfig', '.gitignore', '.gitattributes', '.gitmodules', '.gitconfig',
+    '.dockerignore', '.npmrc', '.nvmrc', '.prettierrc', '.eslintrc', '.babelrc', '.wslconfig', '.ideavimrc', '.vimrc',
+    '.rs', '.ts', '.tsx', '.cts', '.js', '.jsx', '.mjs', '.cjs', '.vue', '.svelte', '.astro', '.py', '.pyi',
+    '.go', '.rb', '.php', '.twig', '.java', '.kt', '.kts', '.gradle', '.scala', '.groovy', '.clj', '.cljs', '.cljc',
+    '.edn', '.cs', '.fs', '.swift', '.dart', '.zig', '.ex', '.exs', '.erl', '.hs', '.ml', '.elm', '.r', '.jl', '.pl',
+    '.sh', '.bash', '.zsh', '.fish', '.nu', '.ps1', '.psm1', '.psd1', '.lua', '.vim', '.nix', '.css', '.scss', '.sass',
+    '.less', '.sql', '.graphql', '.gql', '.proto', '.c', '.h', '.cc', '.cpp', '.cxx', '.hpp', '.hh', '.cmake', '.mk',
+    '.glsl', '.hlsl', '.frag', '.vert', '.geom', '.comp', '.shader', '.wgsl', '.qml', '.tf', '.hcl', '.http',
+    '.diff', '.patch', '.pem'
 )
 
 function Set-Value($path, $name, $value) {
     $key = $Hkcu.CreateSubKey($path)
     $key.SetValue($name, $value)
     $key.Close()
+}
+
+function Clear-UserChoice($ext) {
+    foreach ($name in 'UserChoice', 'UserChoiceLatest') {
+        $path = "$FileExts\$ext\$name"
+        $key = $Hkcu.OpenSubKey($path)
+        if ($null -eq $key) { continue }
+        $choice = $key.GetValue('ProgId')
+        if ($null -eq $choice) {
+            $sub = $Hkcu.OpenSubKey("$path\ProgId")
+            if ($null -ne $sub) { $choice = $sub.GetValue('ProgId'); $sub.Close() }
+        }
+        $key.Close()
+        if ($choice -eq $ProgId) { continue }
+        try { $Hkcu.DeleteSubKeyTree($path, $false) } catch {}
+    }
 }
 
 function Install {
@@ -34,7 +63,7 @@ function Install {
     Set-Value "$Classes\$ProgId\Application" 'ApplicationName' $AppName
     Set-Value "$Classes\$ProgId\Application" 'ApplicationIcon' $Icon
     Set-Value "$Classes\$ProgId\shell\open" 'FriendlyAppName' $AppName
-    Set-Value "$Classes\$ProgId\shell\open\command" '' "wscript.exe //nologo `"$Vbs`" `"%1`""
+    Set-Value "$Classes\$ProgId\shell\open\command" '' "wscript.exe //nologo `"$Vbs`" `"$Optimum`" `"%1`""
 
     Set-Value "$App\Capabilities" 'ApplicationName' $AppName
     Set-Value "$App\Capabilities" 'ApplicationDescription' 'Opens text files in Helix inside Optimum'
@@ -48,6 +77,7 @@ function Install {
         }
         $key.Close()
         Set-Value "$Classes\$ext\OpenWithProgids" $ProgId ''
+        if ($ext -ne '.') { Clear-UserChoice $ext }
         if ($ext -ne '.') { Set-Value "$App\Capabilities\FileAssociations" $ext $ProgId }
     }
 
