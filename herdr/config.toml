@@ -27,6 +27,7 @@ active_row_bg = "reset"
 selection_bg = "reset"
 
 [ui]
+tab_bar_position = "bottom"
 host_cursor = "native"
 show_agent_labels_on_pane_borders = true
 
