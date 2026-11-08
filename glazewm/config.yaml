@@ -269,7 +269,7 @@ keybindings:
   - commands: ['wm-enable-binding-mode --name resize']
     bindings: ['ctrl+alt+r']
 
-  - commands: ['shell-exec C:\Users\Alex\AppData\Local\Programs\Optimum\optimum.exe']
+  - commands: ['shell-exec "C:\Program Files\Optimum\optimum.exe"']
     bindings: ['ctrl+enter']
 
   - commands: ['wm-reload-config']

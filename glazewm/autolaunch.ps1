@@ -5,8 +5,11 @@ $endpoint = 'ws://localhost:6123'
 $mutex = New-Object System.Threading.Mutex($false, 'GlazeWmWorkspaceAutolaunch')
 if (-not $mutex.WaitOne(0)) { exit }
 
+$optimum = @("$env:ProgramFiles\Optimum\optimum.exe", "$env:LOCALAPPDATA\Programs\Optimum\optimum.exe") |
+    Where-Object { Test-Path -LiteralPath $_ } | Select-Object -First 1
+
 $launchers = @{
-    '3-terminal'  = @('C:\Users\Alex\AppData\Local\Programs\Optimum\optimum.exe')
+    '3-terminal'  = @($optimum)
     '4-chrome'    = @('C:\Program Files\Google\Chrome\Application\chrome.exe')
     '5-claude'    = @('explorer.exe', 'shell:AppsFolder\Claude_pzs8sxrjxfjjc!Claude')
     '6-obsidian'  = @('C:\Users\Alex\AppData\Local\Obsidian\Obsidian.exe')
