@@ -13,6 +13,14 @@ focus_pane_down = "prefix+down"
 focus_pane_up = "prefix+up"
 focus_pane_right = "prefix+right"
 
+[[keys.command]]
+key = "alt+shift+f"
+type = "popup"
+command = "~/.local/bin/herdr-goto"
+width = "80%"
+height = "70%"
+description = "goto"
+
 [ui.sound]
 enabled = false
 
