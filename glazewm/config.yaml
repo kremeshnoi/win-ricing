@@ -63,16 +63,14 @@ workspaces:
     display_name: 'system'
   - name: '3-terminal'
     display_name: 'terminal'
-  - name: '4-chrome'
-    display_name: 'chrome'
+  - name: '4-browser'
+    display_name: 'browser'
   - name: '5-claude'
     display_name: 'claude'
   - name: '6-obsidian'
     display_name: 'obsidian'
   - name: '7-docker'
     display_name: 'docker'
-  - name: '8-tabularis'
-    display_name: 'tabularis'
   - name: '9-spotify'
     display_name: 'spotify'
   - name: '10-discord'
@@ -100,10 +98,10 @@ window_rules:
     on: ['manage']
     match:
       - window_process: { regex: '(?i)^(windowsterminal|optimum)$' }
-  - commands: ['move --workspace 4-chrome', 'focus --workspace 4-chrome']
+  - commands: ['move --workspace 4-browser', 'focus --workspace 4-browser']
     on: ['manage']
     match:
-      - window_process: { regex: '(?i)^chrome$' }
+      - window_process: { regex: '(?i)^zen$' }
   - commands: ['move --workspace 6-obsidian', 'focus --workspace 6-obsidian']
     on: ['manage']
     match:
@@ -146,15 +144,11 @@ window_rules:
     on: ['manage']
     match:
       - window_process: { regex: '(?i)^docker desktop$' }
-  - commands: ['move --workspace 8-tabularis', 'focus --workspace 8-tabularis']
-    on: ['manage']
-    match:
-      - window_process: { regex: '(?i)^tabularis$' }
 
   - commands: ['move --workspace 14-misc', 'focus --workspace 14-misc']
     on: ['manage']
     match:
-      - window_process: { not_regex: '(?i)^(windowsterminal|optimum|systemsettings|taskmgr|mmc|regedit|resmon|msinfo32|docker desktop|tabularis|chrome|obsidian|telegram|discord|spotify|claude|battle|battlenet|blizzardbrowser|blizzarderror|diablo|eaconnect_microsoft|eadesktop|ealauncher|epicgameslauncher|epicwebhelper|eve-o preview|eve-online|evelauncher|fortniteclient-win64-shipping|fortnitelauncher|gameoverlayui64|hearthstone|hearthstone beta launcher|hearthstonedecktracker|hellfire|heroes of the storm|heroesofthestorm_x64|heroesswitcher_x64|idlemasterextended|launcher|leagueclient|leagueclientux|leagueclientuxrender|link2ea|lion|lion-win64-shipping|lor|osu!|overwatch launcher|pokemon tcg live|riot client|riotclientservices|riotclientux|sheep|steam|steam-idle|steamerrorreporter|steamerrorreporter64|steamwebhelper|tekken-7-player-displayer|tera|tftclient|tftclient-win64-shipping|tormentum ii|ubisoftconnect|ubisoftgamelauncher|ubisoftgamelauncher64|unrealenginelauncher|upc|uplaywebcore|valorant|valorant-win64-shipping|warcraft iii|warcraft iii launcher|world editor|exefile|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
+      - window_process: { not_regex: '(?i)^(windowsterminal|optimum|systemsettings|taskmgr|mmc|regedit|resmon|msinfo32|docker desktop|zen|obsidian|telegram|discord|spotify|claude|battle|battlenet|blizzardbrowser|blizzarderror|diablo|eaconnect_microsoft|eadesktop|ealauncher|epicgameslauncher|epicwebhelper|eve-o preview|eve-online|evelauncher|fortniteclient-win64-shipping|fortnitelauncher|gameoverlayui64|hearthstone|hearthstone beta launcher|hearthstonedecktracker|hellfire|heroes of the storm|heroesofthestorm_x64|heroesswitcher_x64|idlemasterextended|launcher|leagueclient|leagueclientux|leagueclientuxrender|link2ea|lion|lion-win64-shipping|lor|osu!|overwatch launcher|pokemon tcg live|riot client|riotclientservices|riotclientux|sheep|steam|steam-idle|steamerrorreporter|steamerrorreporter64|steamwebhelper|tekken-7-player-displayer|tera|tftclient|tftclient-win64-shipping|tormentum ii|ubisoftconnect|ubisoftgamelauncher|ubisoftgamelauncher64|unrealenginelauncher|upc|uplaywebcore|valorant|valorant-win64-shipping|warcraft iii|warcraft iii launcher|world editor|exefile|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
 
 binding_modes:
   - name: 'resize'
@@ -178,7 +172,7 @@ keybindings:
     bindings: ['ctrl+shift+y']
   - commands: ['focus --workspace 3-terminal']
     bindings: ['ctrl+shift+t']
-  - commands: ['focus --workspace 4-chrome']
+  - commands: ['focus --workspace 4-browser']
     bindings: ['ctrl+shift+b']
   - commands: ['focus --workspace 5-claude']
     bindings: ['ctrl+shift+a']
@@ -186,8 +180,6 @@ keybindings:
     bindings: ['ctrl+shift+n']
   - commands: ['focus --workspace 7-docker']
     bindings: ['ctrl+shift+c']
-  - commands: ['focus --workspace 8-tabularis']
-    bindings: ['ctrl+shift+d']
   - commands: ['focus --workspace 9-spotify']
     bindings: ['ctrl+shift+s']
   - commands: ['focus --workspace 10-discord']
@@ -209,7 +201,7 @@ keybindings:
     bindings: ['ctrl+alt+shift+y']
   - commands: ['move --workspace 3-terminal', 'focus --workspace 3-terminal']
     bindings: ['ctrl+alt+shift+t']
-  - commands: ['move --workspace 4-chrome', 'focus --workspace 4-chrome']
+  - commands: ['move --workspace 4-browser', 'focus --workspace 4-browser']
     bindings: ['ctrl+alt+shift+b']
   - commands: ['move --workspace 5-claude', 'focus --workspace 5-claude']
     bindings: ['ctrl+alt+shift+a']
@@ -217,8 +209,6 @@ keybindings:
     bindings: ['ctrl+alt+shift+n']
   - commands: ['move --workspace 7-docker', 'focus --workspace 7-docker']
     bindings: ['ctrl+alt+shift+c']
-  - commands: ['move --workspace 8-tabularis', 'focus --workspace 8-tabularis']
-    bindings: ['ctrl+alt+shift+d']
   - commands: ['move --workspace 9-spotify', 'focus --workspace 9-spotify']
     bindings: ['ctrl+alt+shift+s']
   - commands: ['move --workspace 10-discord', 'focus --workspace 10-discord']

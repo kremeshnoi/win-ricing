@@ -103,6 +103,7 @@ LCtrl & Tab::AltTab
 <#+l::HerdrNav("pane right")
 <#+n::HerdrNav("nvim-sessions")
 <#+r::HerdrNav("reviewr")
+<#+f::Send("!+f")
 #HotIf
 
 #HotIf EveSpace()
