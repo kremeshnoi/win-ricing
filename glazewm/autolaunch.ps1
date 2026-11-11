@@ -11,7 +11,6 @@ $optimum = @("$env:ProgramFiles\Optimum\optimum.exe", "$env:LOCALAPPDATA\Program
 $launchers = @{
     '3-terminal'  = @($optimum)
     '4-browser'   = @('C:\Program Files\Zen Browser\zen.exe')
-    '5-claude'    = @('explorer.exe', 'shell:AppsFolder\Claude_pzs8sxrjxfjjc!Claude')
     '6-obsidian'  = @('C:\Users\Alex\AppData\Local\Obsidian\Obsidian.exe')
     '7-docker'    = @('C:\Program Files\Docker\Docker\Docker Desktop.exe')
     '9-spotify'   = @('C:\Users\Alex\AppData\Roaming\Spotify\Spotify.exe')
