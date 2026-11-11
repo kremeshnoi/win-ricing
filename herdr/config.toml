@@ -31,8 +31,8 @@ auto_switch = false
 [theme.custom]
 panel_bg = "reset"
 sidebar_bg = "reset"
-active_row_bg = "reset"
-selection_bg = "reset"
+active_row_bg = "#262626"
+selection_bg = "#333333"
 
 [ui]
 tab_bar_position = "bottom"
