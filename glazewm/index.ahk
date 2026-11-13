@@ -101,7 +101,6 @@ LCtrl & Tab::AltTab
 <#+j::HerdrNav("agent next")
 <#+h::HerdrNav("pane left")
 <#+l::HerdrNav("pane right")
-<#+n::HerdrNav("nvim-sessions")
 <#+r::HerdrNav("reviewr")
 <#+f::Send("!+f")
 #HotIf
