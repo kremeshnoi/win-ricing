@@ -102,7 +102,6 @@ LCtrl & Tab::AltTab
 <#+h::HerdrNav("pane left")
 <#+l::HerdrNav("pane right")
 <#+r::HerdrNav("reviewr")
-<#+f::Send("!+f")
 #HotIf
 
 #HotIf EveSpace()
