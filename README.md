@@ -3,6 +3,8 @@ Windows 11 rice: tiling WM, taskbar on top with no Start button, a launcher inst
 
 Verified on Windows 11 25H2, build 26200.
 
+How it is wired, where each file goes and why: [docs/](docs/README.md).
+
 ## Showcase
 <img width="1920" height="1080" alt="{70289B8C-30DD-4F80-B4C3-0A63F159E72F}" src="https://github.com/user-attachments/assets/660f2302-d004-4a36-95a8-27c790afd217" />
 <img width="1920" height="1080" alt="{709A015F-4A30-49CC-A2A1-4F5C72898CC4}" src="https://github.com/user-attachments/assets/3eaa1498-caac-4bf7-9b41-99fdee3fe388" />
