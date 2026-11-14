@@ -77,8 +77,6 @@ workspaces:
     display_name: 'telegram'
   - name: '12-eve'
     display_name: 'eve'
-  - name: '13-games'
-    display_name: 'games'
   - name: '14-misc'
     display_name: 'misc'
 
@@ -92,57 +90,94 @@ window_rules:
       - window_title: { regex: '[Pp]icture.in.[Pp]icture' }
         window_class: { regex: 'Chrome_WidgetWin_1|MozillaDialogClass' }
 
-  - commands: ['set-tiling', 'move --workspace 3-terminal', 'focus --workspace 3-terminal']
+  - commands: ['set-tiling', 'move --workspace 3-terminal']
     on: ['manage']
     match:
       - window_process: { regex: '(?i)^(windowsterminal|optimum)$' }
-  - commands: ['move --workspace 4-browser', 'focus --workspace 4-browser']
+  - commands: ['focus --workspace 3-terminal']
+    on: ['manage']
+    match:
+      - window_process: { regex: '(?i)^(windowsterminal|optimum)$' }
+        window_class: { regex: '^(CASCADIA_HOSTING_WINDOW_CLASS|Optimum\.Window\..*)$' }
+  - commands: ['move --workspace 4-browser']
     on: ['manage']
     match:
       - window_process: { regex: '(?i)^zen$' }
-  - commands: ['move --workspace 6-obsidian', 'focus --workspace 6-obsidian']
+  - commands: ['focus --workspace 4-browser']
+    on: ['manage']
+    match:
+      - window_process: { regex: '(?i)^zen$' }
+        window_class: { equals: 'MozillaWindowClass' }
+  - commands: ['move --workspace 6-obsidian']
     on: ['manage']
     match:
       - window_process: { regex: '(?i)^obsidian$' }
-  - commands: ['move --workspace 11-telegram', 'focus --workspace 11-telegram']
+  - commands: ['focus --workspace 6-obsidian']
+    on: ['manage']
+    match:
+      - window_process: { regex: '(?i)^obsidian$' }
+        window_class: { equals: 'Chrome_WidgetWin_1' }
+  - commands: ['move --workspace 11-telegram']
     on: ['manage']
     match:
       - window_process: { regex: '(?i)^telegram$' }
-  - commands: ['move --workspace 10-discord', 'focus --workspace 10-discord']
+  - commands: ['focus --workspace 11-telegram']
+    on: ['manage']
+    match:
+      - window_process: { regex: '(?i)^telegram$' }
+        window_class: { regex: '^Qt\d+QWindowIcon$' }
+  - commands: ['move --workspace 10-discord']
     on: ['manage']
     match:
       - window_process: { regex: '(?i)^discord$' }
-  - commands: ['move --workspace 9-spotify', 'focus --workspace 9-spotify']
+  - commands: ['focus --workspace 10-discord']
+    on: ['manage']
+    match:
+      - window_process: { regex: '(?i)^discord$' }
+        window_class: { equals: 'Chrome_WidgetWin_1' }
+        window_title: { not_regex: '(?i)updater' }
+  - commands: ['set-tiling', 'move --workspace 9-spotify']
     on: ['manage']
     match:
       - window_process: { regex: '(?i)^spotify$' }
-  - commands: ['set-tiling']
-    on: ['manage', 'focus']
-    run_once: false
+  - commands: ['focus --workspace 9-spotify']
+    on: ['manage']
     match:
       - window_process: { regex: '(?i)^spotify$' }
-  - commands: ['move --workspace 13-games', 'focus --workspace 13-games']
+        window_class: { equals: 'Chrome_WidgetWin_1' }
+  - commands: ['move --workspace 12-eve']
     on: ['manage']
     match:
-      - window_process: { regex: '(?i)^(battle|battlenet|blizzardbrowser|blizzarderror|diablo|eaconnect_microsoft|eadesktop|ealauncher|epicgameslauncher|epicwebhelper|eve-o preview|eve-online|evelauncher|fortniteclient-win64-shipping|fortnitelauncher|gameoverlayui64|hearthstone|hearthstone beta launcher|hearthstonedecktracker|hellfire|heroes of the storm|heroesofthestorm_x64|heroesswitcher_x64|idlemasterextended|launcher|leagueclient|leagueclientux|leagueclientuxrender|link2ea|lion|lion-win64-shipping|lor|osu!|overwatch launcher|pokemon tcg live|riot client|riotclientservices|riotclientux|sheep|steam|steam-idle|steamerrorreporter|steamerrorreporter64|steamwebhelper|tekken-7-player-displayer|tera|tftclient|tftclient-win64-shipping|tormentum ii|ubisoftconnect|ubisoftgamelauncher|ubisoftgamelauncher64|unrealenginelauncher|upc|uplaywebcore|valorant|valorant-win64-shipping|warcraft iii|warcraft iii launcher|world editor)$' }
-  - commands: ['move --workspace 12-eve', 'focus --workspace 12-eve']
+      - window_process: &eve { regex: '(?i)^exefile$' }
+  - commands: ['focus --workspace 12-eve']
     on: ['manage']
     match:
-      - window_process: { regex: '(?i)^exefile$' }
+      - window_process: *eve
+        window_class: { equals: 'trinityWindow' }
 
-  - commands: ['move --workspace 2-system', 'focus --workspace 2-system']
+  - commands: ['move --workspace 2-system']
     on: ['manage']
     match:
-      - window_process: { regex: '(?i)^(systemsettings|taskmgr|mmc|regedit|resmon|msinfo32)$' }
-  - commands: ['move --workspace 7-docker', 'focus --workspace 7-docker']
+      - window_process: &system { regex: '(?i)^(systemsettings|taskmgr|mmc|regedit|resmon|msinfo32)$' }
+  - commands: ['focus --workspace 2-system']
     on: ['manage']
     match:
-      - window_process: { regex: '(?i)^docker desktop$' }
+      - window_process: *system
+        window_class: { not_equals: '#32770' }
+  - commands: ['move --workspace 7-docker']
+    on: ['manage']
+    match:
+      - window_process: &docker { regex: '(?i)^docker desktop$' }
+  - commands: ['focus --workspace 7-docker']
+    on: ['manage']
+    match:
+      - window_process: *docker
+        window_class: { not_equals: '#32770' }
 
-  - commands: ['move --workspace 14-misc', 'focus --workspace 14-misc']
+  - commands: ['move --workspace 14-misc']
     on: ['manage']
     match:
-      - window_process: { not_regex: '(?i)^(windowsterminal|optimum|systemsettings|taskmgr|mmc|regedit|resmon|msinfo32|docker desktop|zen|obsidian|telegram|discord|spotify|battle|battlenet|blizzardbrowser|blizzarderror|diablo|eaconnect_microsoft|eadesktop|ealauncher|epicgameslauncher|epicwebhelper|eve-o preview|eve-online|evelauncher|fortniteclient-win64-shipping|fortnitelauncher|gameoverlayui64|hearthstone|hearthstone beta launcher|hearthstonedecktracker|hellfire|heroes of the storm|heroesofthestorm_x64|heroesswitcher_x64|idlemasterextended|launcher|leagueclient|leagueclientux|leagueclientuxrender|link2ea|lion|lion-win64-shipping|lor|osu!|overwatch launcher|pokemon tcg live|riot client|riotclientservices|riotclientux|sheep|steam|steam-idle|steamerrorreporter|steamerrorreporter64|steamwebhelper|tekken-7-player-displayer|tera|tftclient|tftclient-win64-shipping|tormentum ii|ubisoftconnect|ubisoftgamelauncher|ubisoftgamelauncher64|unrealenginelauncher|upc|uplaywebcore|valorant|valorant-win64-shipping|warcraft iii|warcraft iii launcher|world editor|exefile|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
+      - window_process: &misc { not_regex: '(?i)^(windowsterminal|optimum|zen|obsidian|telegram|discord|spotify|exefile|systemsettings|taskmgr|mmc|regedit|resmon|msinfo32|docker desktop|zebar|snippingtool|screenclippinghost|screensketch|textinputhost|shellexperiencehost|searchhost|searchapp|startmenuexperiencehost|lockapp)$' }
 
 binding_modes:
   - name: 'resize'
@@ -180,8 +215,6 @@ keybindings:
     bindings: ['ctrl+shift+m']
   - commands: ['focus --workspace 12-eve']
     bindings: ['ctrl+shift+e']
-  - commands: ['focus --workspace 13-games']
-    bindings: ['ctrl+shift+g']
   - commands: ['focus --workspace 14-misc']
     bindings: ['ctrl+shift+9']
   - commands: ['focus --prev-active-workspace']
@@ -207,8 +240,6 @@ keybindings:
     bindings: ['ctrl+alt+shift+m']
   - commands: ['move --workspace 12-eve', 'focus --workspace 12-eve']
     bindings: ['ctrl+alt+shift+e']
-  - commands: ['move --workspace 13-games', 'focus --workspace 13-games']
-    bindings: ['ctrl+alt+shift+g']
   - commands: ['move --workspace 14-misc', 'focus --workspace 14-misc']
     bindings: ['ctrl+alt+shift+9']
 
@@ -248,9 +279,6 @@ keybindings:
     bindings: ['ctrl+alt+shift+v']
   - commands: ['wm-enable-binding-mode --name resize']
     bindings: ['ctrl+alt+r']
-
-  - commands: ['shell-exec "C:\Program Files\Optimum\optimum.exe"']
-    bindings: ['ctrl+enter']
 
   - commands: ['wm-reload-config']
     bindings: ['ctrl+alt+shift+r']
