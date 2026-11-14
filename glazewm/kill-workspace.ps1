@@ -69,7 +69,7 @@ function Get-AppRoot($path) {
     Split-Path $path
 }
 
-function Get-Descendants($ids, $processes) {
+function Get-Descendants($ids, $processes, $stop = @{}) {
     $children = @{}
     foreach ($process in $processes.Values) {
         $parent = [int]$process.ParentProcessId
@@ -81,19 +81,21 @@ function Get-Descendants($ids, $processes) {
     foreach ($id in $ids) { $queue.Enqueue([int]$id) }
     while ($queue.Count -gt 0) {
         $id = $queue.Dequeue()
-        if ($result.ContainsKey($id)) { continue }
+        if ($result.ContainsKey($id) -or $stop.ContainsKey($id)) { continue }
         $result[$id] = $true
         if ($children.ContainsKey($id)) { foreach ($child in $children[$id]) { $queue.Enqueue($child) } }
     }
     $result
 }
 
-function Get-ForeignPids($name, $processes) {
+function Get-ForeignPids($name, $processes, $own) {
     $ids = foreach ($other in ((& $glazewm query workspaces) | ConvertFrom-Json).data.workspaces) {
         if ($other.name -eq $name) { continue }
         foreach ($window in @(Get-Windows $other)) { Get-WindowPid $window }
     }
-    Get-Descendants @($ids) $processes
+    $stop = @{}
+    foreach ($window in $own) { $id = Get-WindowPid $window; if ($ids -notcontains $id) { $stop[$id] = $true } }
+    Get-Descendants @($ids) $processes $stop
 }
 
 function Resolve-Targets($windows, $processes, $foreign) {
@@ -153,7 +155,7 @@ $windows = @(Get-Windows $workspace)
 if ($windows.Count -eq 0) { exit }
 
 $processes = Get-Processes
-$foreign = Get-ForeignPids $name $processes
+$foreign = Get-ForeignPids $name $processes $windows
 $targets = Resolve-Targets $windows $processes $foreign
 Write-Log ('kill ' + $name + ': ' + (($targets.Kill.Values | ForEach-Object { $_.Name } | Sort-Object -Unique) -join ',') +
            ' pids=' + ($targets.Kill.Keys -join ',') + ' close=' + (($targets.Close | ForEach-Object { $_.processName }) -join ','))
@@ -175,7 +177,7 @@ for ($attempt = 1; $attempt -le 30; $attempt++) {
         foreach ($window in $dead) { & $glazewm command --id $window.id ignore | Out-Null }
         if ($alive.Count -gt 0) {
             $processes = Get-Processes
-            Invoke-Targets (Resolve-Targets $alive $processes (Get-ForeignPids $name $processes))
+            Invoke-Targets (Resolve-Targets $alive $processes (Get-ForeignPids $name $processes $alive))
         }
         Write-Log ('retry ' + $name + ': alive=' + (($alive | ForEach-Object { $_.processName }) -join ',') + ' ghost=' + $dead.Count)
     }
