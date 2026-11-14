@@ -92,6 +92,11 @@ LCtrl & Tab::ShiftAltTab
 
 LCtrl & Tab::AltTab
 
+#HotIf WinActive("ahk_exe zen.exe")
+!Tab::Send "^{Tab}"
+!+Tab::Send "^+{Tab}"
+#HotIf
+
 #HotIf WinActive("ahk_exe WindowsTerminal.exe") || WinActive("ahk_exe optimum.exe")
 <#h::HerdrNav("tab prev")
 <#l::HerdrNav("tab next")
