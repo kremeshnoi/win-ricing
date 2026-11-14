@@ -47,20 +47,6 @@ $rows += [PSCustomObject]@{ Check = 'task autohotkey'; Value = $val; Ok = ($task
 $run = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -ErrorAction SilentlyContinue).GlazeWM
 $rows += [PSCustomObject]@{ Check = 'Run\GlazeWM'; Value = $(if ($run) { 'present' } else { 'absent' }); Ok = [bool]$run }
 
-$runTile = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -ErrorAction SilentlyContinue).'GlazeWM Autotiling'
-$rows += [PSCustomObject]@{ Check = 'Run\GlazeWM Autotiling'; Value = $(if ($runTile) { 'present' } else { 'absent' }); Ok = [bool]$runTile }
-
-$tileProc = Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
-    Where-Object { $_.CommandLine -like '*autotiling.ps1*' }
-$rows += [PSCustomObject]@{ Check = 'autotiling daemon'; Value = $(if ($tileProc) { "running, pid $($tileProc.ProcessId -join ',')" } else { 'not running' }); Ok = [bool]$tileProc }
-
-$runLaunch = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -ErrorAction SilentlyContinue).'GlazeWM Autolaunch'
-$rows += [PSCustomObject]@{ Check = 'Run\GlazeWM Autolaunch'; Value = $(if ($runLaunch) { 'present' } else { 'absent' }); Ok = [bool]$runLaunch }
-
-$launchProc = Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
-    Where-Object { $_.CommandLine -like '*autolaunch.ps1*' }
-$rows += [PSCustomObject]@{ Check = 'autolaunch daemon'; Value = $(if ($launchProc) { "running, pid $($launchProc.ProcessId -join ',')" } else { 'not running' }); Ok = [bool]$launchProc }
-
 $runEve = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -ErrorAction SilentlyContinue).'GlazeWM Eve'
 $rows += [PSCustomObject]@{ Check = 'Run\GlazeWM Eve'; Value = $(if ($runEve) { 'present' } else { 'absent' }); Ok = [bool]$runEve }
 
