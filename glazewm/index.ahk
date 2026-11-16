@@ -110,13 +110,13 @@ LCtrl & Tab::AltTab
 #HotIf
 
 #HotIf SlotSpace("GlazeWmEveSpace")
-<#Left::SignalSlots("GlazeWmEvePrev")
-<#Right::SignalSlots("GlazeWmEveNext")
+$^Left::SignalSlots("GlazeWmEvePrev")
+$^Right::SignalSlots("GlazeWmEveNext")
 #HotIf
 
 #HotIf SlotSpace("GlazeWmZenSpace")
-<#Left::SignalSlots("GlazeWmZenPrev")
-<#Right::SignalSlots("GlazeWmZenNext")
+$^Left::SignalSlots("GlazeWmZenPrev")
+$^Right::SignalSlots("GlazeWmZenNext")
 #HotIf
 
 SlotSpace(name) {
