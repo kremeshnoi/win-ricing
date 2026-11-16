@@ -9,11 +9,11 @@ EVE clients on `12-eve` float at the full size of the workspace, one on top, the
 
 ## Decision
 
-`zen.ps1` is a copy of `eve.ps1` for Zen main windows (`zen`, `MozillaWindowClass`) on `4-browser`, with its own events, slots file and logon entry `Run\GlazeWM Zen`. `eve.ps1` is untouched and still the only writer of `workspace.txt` and `workspaces.txt`. `index.ahk` sends `lwin+left` and `lwin+right` to whichever daemon owns the focused workspace; EVE moved from bare arrows to the same keys, so both work alike.
+`zen.ps1` is a copy of `eve.ps1` for Zen main windows (`zen`, `MozillaWindowClass`) on `4-browser`, with its own events, slots file and logon entry `Run\GlazeWM Zen`. `eve.ps1` is untouched and still the only writer of `workspace.txt` and `workspaces.txt`. `index.ahk` sends `ctrl+left` and `ctrl+right` to whichever daemon owns the focused workspace; EVE moved from bare arrows to the same keys, so both work alike.
 
 ## Consequences
 
 - Every Zen window covers the whole workspace; tiling one is undone at the next sync. `zen.ps1` fixes the size as well as the position, because a new Zen window arrives tiled at half width.
-- Windows' own snap on `win+left` and `win+right` is gone on `4-browser` and `12-eve`.
+- On `4-browser` and `12-eve` `ctrl+left` and `ctrl+right` never reach the app: no word jumps in Zen text fields.
 - Zen dialogs and popups are not slots; they keep GlazeWM's defaults.
 - A fix to the slot logic goes into both scripts.
