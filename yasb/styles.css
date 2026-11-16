@@ -1869,8 +1869,9 @@ which is 16 pixels same as the other sections. */
     color: var(--text);
 }
 
-/* EVE Slots */
-.eve-slots {
+/* EVE and Zen Slots */
+.eve-slots,
+.zen-slots {
     background-color: var(--background);
     border: 1px solid var(--border);
     border-radius: 16px;
@@ -1878,7 +1879,8 @@ which is 16 pixels same as the other sections. */
     padding: 0px 8px;
 }
 
-.eve-slots .widget-container {
+.eve-slots .widget-container,
+.zen-slots .widget-container {
     padding: 0px 4px;
 }
 

@@ -11,6 +11,7 @@ bars:
     style: "adaptive"
     style_adaptive_exclude:
     - eve_slots
+    - zen_slots
     screens:
     - '*'
     class_name: yasb-bar
@@ -49,6 +50,7 @@ bars:
       - language
       right:
       - eve_slots
+      - zen_slots
       - workspace_menu
       - lines
       - systray
@@ -97,6 +99,19 @@ widgets:
       class_name: "eve-slots"
       exec_options:
         run_cmd: 'type C:\Users\Alex\.glzr\glazewm\eve-slots.txt'
+        run_interval: 400
+        return_format: "string"
+        hide_empty: true
+      callbacks:
+        on_left: "do_nothing"
+  zen_slots:
+    type: "yasb.custom.CustomWidget"
+    options:
+      label: "{data}"
+      label_alt: "{data}"
+      class_name: "zen-slots"
+      exec_options:
+        run_cmd: 'type C:\Users\Alex\.glzr\glazewm\zen-slots.txt'
         run_interval: 400
         return_format: "string"
         hide_empty: true
