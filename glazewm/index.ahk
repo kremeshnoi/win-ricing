@@ -109,13 +109,18 @@ LCtrl & Tab::AltTab
 <#+r::HerdrNav("reviewr")
 #HotIf
 
-#HotIf EveSpace()
-$Left::SignalEve("GlazeWmEvePrev")
-$Right::SignalEve("GlazeWmEveNext")
+#HotIf SlotSpace("GlazeWmEveSpace")
+<#Left::SignalSlots("GlazeWmEvePrev")
+<#Right::SignalSlots("GlazeWmEveNext")
 #HotIf
 
-EveSpace() {
-    event := DllCall("OpenEventW", "uint", 0x00100000, "int", 0, "str", "GlazeWmEveSpace", "ptr")
+#HotIf SlotSpace("GlazeWmZenSpace")
+<#Left::SignalSlots("GlazeWmZenPrev")
+<#Right::SignalSlots("GlazeWmZenNext")
+#HotIf
+
+SlotSpace(name) {
+    event := DllCall("OpenEventW", "uint", 0x00100000, "int", 0, "str", name, "ptr")
     if (!event)
         return false
     active := DllCall("WaitForSingleObject", "ptr", event, "uint", 0) = 0
@@ -123,7 +128,7 @@ EveSpace() {
     return active
 }
 
-SignalEve(name) {
+SignalSlots(name) {
     event := DllCall("OpenEventW", "uint", 0x0002, "int", 0, "str", name, "ptr")
     if (!event)
         return
