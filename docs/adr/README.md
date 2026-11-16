@@ -8,6 +8,7 @@ One file per decision: what was decided, why, and what it costs. An accepted rec
 | [0002](0002-focus-only-main-windows.md) | Only an app's main window pulls focus to its workspace | accepted |
 | [0003](0003-workspaces-on-ctrl-shift.md) | Workspaces stay on `ctrl+shift+<key>` although apps lose those shortcuts | accepted |
 | [0004](0004-mac-like-modifiers.md) | Modifiers behave like on the Mac | accepted |
+| [0005](0005-zen-slots.md) | Zen windows live in slots like EVE clients | accepted |
 
 ## Template
 

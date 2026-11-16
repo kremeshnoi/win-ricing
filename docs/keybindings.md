@@ -19,6 +19,7 @@ Ctrl and Alt are swapped in the Wooting firmware, so the key next to the space b
 | `ctrl+tab`, `ctrl+shift+tab` | Windows window switcher through `index.ahk` |
 | `alt+tab` | Windows window switcher; in Zen next tab, `alt+shift+tab` previous |
 | `alt+space` | keyboard layout |
+| `lwin+left`, `lwin+right` on `eve` and `browser` | previous / next EVE or Zen slot through `index.ahk`, [ADR 0005](adr/0005-zen-slots.md) |
 
 The full list with every key is in `glazewm/keymap.html`.
 
