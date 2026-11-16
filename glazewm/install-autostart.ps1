@@ -6,10 +6,11 @@ $AhkExe   = 'C:\Program Files\AutoHotkey\v2\AutoHotkey64.exe'
 $AhkArg   = "$env:USERPROFILE\.glzr\glazewm\index.ahk"
 $GlazeExe = 'C:\Program Files\glzr.io\GlazeWM\glazewm.exe'
 $EveVbs   = "$env:USERPROFILE\.glzr\glazewm\eve.vbs"
+$ZenVbs   = "$env:USERPROFILE\.glzr\glazewm\zen.vbs"
 $TaskPath = '\win-ricing\'
 $RunKey   = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run'
 
-foreach ($p in $AhkExe, $AhkArg, $GlazeExe, $EveVbs) {
+foreach ($p in $AhkExe, $AhkArg, $GlazeExe, $EveVbs, $ZenVbs) {
     if (-not (Test-Path -LiteralPath $p)) { throw "not found: $p" }
 }
 
@@ -64,6 +65,10 @@ $eveCmd = "wscript.exe `"$EveVbs`""
 Set-ItemProperty -Path $RunKey -Name 'GlazeWM Eve' -Value $eveCmd -Type String
 Write-Host "Run\GlazeWM Eve = $eveCmd"
 
+$zenCmd = "wscript.exe `"$ZenVbs`""
+Set-ItemProperty -Path $RunKey -Name 'GlazeWM Zen' -Value $zenCmd -Type String
+Write-Host "Run\GlazeWM Zen = $zenCmd"
+
 $policy = 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Policies\System'
 if (-not (Test-Path -LiteralPath $policy)) { New-Item -Path $policy -Force | Out-Null }
 Set-ItemProperty -Path $policy -Name 'DisableLockWorkstation' -Value 1 -Type DWord
@@ -84,9 +89,10 @@ Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
     ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
 
 Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" |
-    Where-Object { $_.CommandLine -like '*eve.ps1*' } |
+    Where-Object { $_.CommandLine -like '*eve.ps1*' -or $_.CommandLine -like '*zen.ps1*' } |
     ForEach-Object { Stop-Process -Id $_.ProcessId -Force -ErrorAction SilentlyContinue }
 Start-Process -FilePath 'explorer.exe' -ArgumentList $EveVbs
+Start-Process -FilePath 'explorer.exe' -ArgumentList $ZenVbs
 Start-Sleep -Seconds 2
 
 Write-Host ''

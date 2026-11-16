@@ -54,6 +54,13 @@ $eveProc = Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorA
     Where-Object { $_.CommandLine -like '*eve.ps1*' }
 $rows += [PSCustomObject]@{ Check = 'eve daemon'; Value = $(if ($eveProc) { "running, pid $($eveProc.ProcessId -join ',')" } else { 'not running' }); Ok = [bool]$eveProc }
 
+$runZen = (Get-ItemProperty 'HKCU:\Software\Microsoft\Windows\CurrentVersion\Run' -ErrorAction SilentlyContinue).'GlazeWM Zen'
+$rows += [PSCustomObject]@{ Check = 'Run\GlazeWM Zen'; Value = $(if ($runZen) { 'present' } else { 'absent' }); Ok = [bool]$runZen }
+
+$zenProc = Get-CimInstance Win32_Process -Filter "Name='powershell.exe'" -ErrorAction SilentlyContinue |
+    Where-Object { $_.CommandLine -like '*zen.ps1*' }
+$rows += [PSCustomObject]@{ Check = 'zen daemon'; Value = $(if ($zenProc) { "running, pid $($zenProc.ProcessId -join ',')" } else { 'not running' }); Ok = [bool]$zenProc }
+
 $lnk = "$env:APPDATA\Microsoft\Windows\Start Menu\Programs\Startup\no-start-menu.lnk"
 $rows += [PSCustomObject]@{ Check = 'old Startup shortcut'; Value = $(if (Test-Path -LiteralPath $lnk) { 'present' } else { 'absent' }); Ok = (-not (Test-Path -LiteralPath $lnk)) }
 
