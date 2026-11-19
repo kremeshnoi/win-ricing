@@ -12,12 +12,6 @@ focus_pane_down = "prefix+down"
 focus_pane_up = "prefix+up"
 focus_pane_right = "prefix+right"
 
-[[keys.command]]
-key = "prefix+ctrl+r"
-type = "shell"
-command = "~/.local/bin/herdr-git-review"
-description = "review diff"
-
 [ui.sound]
 enabled = false
 
