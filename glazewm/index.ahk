@@ -106,7 +106,6 @@ LCtrl & Tab::AltTab
 <#+j::HerdrNav("agent next")
 <#+h::HerdrNav("pane left")
 <#+l::HerdrNav("pane right")
-<#+r::HerdrNav("reviewr")
 #HotIf
 
 #HotIf SlotSpace("GlazeWmEveSpace")
