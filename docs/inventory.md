@@ -23,8 +23,6 @@
 | `yasb/config.yaml`, `yasb/styles.css` | `%USERPROFILE%\.config\yasb\` | YASB | the top bar |
 | `terminal/settings.json` | Windows Terminal settings | Windows Terminal | WSL profile |
 | `terminal/install-helix-open.ps1`, `terminal/helix-open.vbs` | `%LOCALAPPDATA%\HelixTerminal\` | Explorer file associations | opens text files in Helix inside Optimum |
-| `herdr/config.toml` | `~/.config/herdr/config.toml` in NixOS | herdr | placed by the dotfiles repo |
-| `herdr/herdr-nav` | `~/.local/bin/herdr-nav` in NixOS | `index.ahk` | placed by the dotfiles repo |
 | `Dockerfile`, `Caddyfile` | — | Docker | serves `keymap.html` |
 
 ## Logon
